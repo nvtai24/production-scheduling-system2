@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://NVTAI\SQLEXPRESS:1433;databaseName=ProductionSchedulingSystem_DB;trustServerCertificate=true;
+    username: sa
+    password: 123
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.SQLServerDialect
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+  server:
+    port: 8080
+    servlet:
+      session:
+        timeout: 30m
+  logging:
+    level:
+      org:
+        springframework:
+          security: DEBUG
