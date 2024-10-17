@@ -1,0 +1,248 @@
+/* Common CSS Variables */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #217dbb;
+    --primary-background-color: #ffffff;
+    --secondary-background-color: #f2f2f2;
+    --border-color: #ddd;
+    --error-color: #e74c3c;
+    --label-color: #4b0082;
+}
+
+/* Common Body CSS */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--secondary-background-color);
+    width: 100%;
+    height: 100vh;
+    margin: 0;     /* padding: 20px; */
+    box-sizing: border-box;
+}
+
+.common-container {
+    background-color: var(--primary-background-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    min-height: 100%;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+/* Common Table CSS Start*/
+.common-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.common-table thead {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.common-table th, .common-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.common-table tbody tr:nth-child(even) {
+    background-color: var(--secondary-background-color);
+}
+
+.common-table th {
+    font-weight: bold;
+    text-align: center;
+}
+
+.common-table tbody td {
+    text-align: center;
+}
+/* Common Table CSS End */
+
+.page-title {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.sub-title {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* style.css */
+button {
+    padding: 10px 15px;
+    min-width: 70px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: var(--primary-color);
+}
+
+button.edit {
+    background-color: #28a745;     /* Màu xanh lá cây */
+}
+
+button.delete {
+    background-color: #dc3545;     /* Màu đỏ */
+}
+
+button.edit:hover {
+    background-color: #218838;     /* Màu xanh lá cây đậm hơn khi hover */
+}
+
+button.delete:hover {
+    background-color: #c82333;     /* Màu đỏ đậm hơn khi hover */
+}
+
+
+/* Login Page Specific CSS */
+.form {
+    background-color: var(--primary-background-color);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.form .title {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--label-color);
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-select {
+    width: 100%;
+    min-width: 50%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+}
+
+.option-item {
+    width: 48%;
+}
+
+/* Login form */
+.form-login .options {
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.form-login .remember-me {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+
+.remember-me input {
+    margin-right: 5px;
+}
+
+.forgot a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.forgot a:hover {
+    text-decoration: underline;
+}
+
+.form-login .sign {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.sign:hover {
+    background-color: var(--secondary-color);
+}
+
+.error-message {
+    margin-top: 20px;
+    color: var(--error-color);
+    text-align: center;
+}
+
+#remember-me-text {
+    margin-bottom: 0;
+    color: var(--secondary-color);
+}
+
+#remember-me-text p {
+    white-space: nowrap;
+}
+/* Production Plan Page Specific CSS */
+body.production-plan-page {
+    font-family: Arial, sans-serif;
+    background-color: var(--secondary-background-color);
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#production-plan-info {
+    font-size: 1em;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+#production-plan-info strong {
+    color: var(--label-color);
+}

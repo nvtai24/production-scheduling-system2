@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="center-container">
+    <div class="form">
+        <form class="form-login" th:action="@{/login}" method="POST">
+
+            <p class="title">LOGIN</p>
+
+            <div class="input-group">
+                <label for="username">Username</label>
+                <!-- Giữ lại tên người dùng đã nhập khi có lỗi -->
+                <input type="text" name="username" id="username" placeholder="Username"
+                       th:value="${param.username}" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <div class="options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember-me" name="remember-me">
+                        <label id="remember-me-text" for="remember-me">Remember me</label>
+                    </div>
+                    <div class="forgot">
+                        <a rel="noopener noreferrer" href="#">Forgot Password?</a>
+                    </div>
+                </div>
+            </div>
+            <button class="sign">Sign in</button>
+
+            <!-- Hiển thị thông báo lỗi nếu có -->
+            <div th:if="${error}">
+                <p class="error" th:text="${error}"></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/js/rememberMe.js}"></script>
+</body>
+
+</html>
