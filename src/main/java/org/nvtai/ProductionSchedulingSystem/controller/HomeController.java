@@ -5,20 +5,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
 @Controller
-public class LoginController {
+public class HomeController {
+    @GetMapping("/home")
+    public String home(Model model, Principal principal) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
-        if (error != null) {
-            model.addAttribute("error", "Invalid username or password");
+        if (principal != null) {
+            model.addAttribute("user", principal);
         }
-        return "login";
+        return "home";
     }
-
-
 }

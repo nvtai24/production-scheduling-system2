@@ -28,33 +28,45 @@ public class SecurityConfig {
         return authProvider;
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeHttpRequests(authorizeRequests ->
+//                        authorizeRequests
+//                                .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+//                                .anyRequest().authenticated()
+//                )
+//                .formLogin(formLogin ->
+//                        formLogin
+//                                .loginPage("/login")
+//                                .defaultSuccessUrl("/home", true)
+//                                .failureUrl("/login?error=true")
+//                                .permitAll()
+//                )
+//                .logout(logout ->
+//                        logout
+//                                .logoutUrl("/logout")
+//                                .logoutSuccessUrl("/login?logout=true")
+//                                .permitAll()
+//                )
+//                .sessionManagement(sessionManagement ->
+//                        sessionManagement
+//                                .sessionFixation().migrateSession()
+//                )
+//                .csrf(csrf -> csrf.disable());
+//        return http.build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/login", "/css/**", "/js/**").permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()  // Cho phép tất cả các yêu cầu mà không cần xác thực
                 )
-                .formLogin(formLogin ->
-                        formLogin
-                                .loginPage("/login")
-                                .defaultSuccessUrl("/home", true)
-                                .failureUrl("/login?error=true")
-                                .permitAll()
-                )
-                .logout(logout ->
-                        logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/login?logout=true")
-                                .permitAll()
-                )
-                .sessionManagement(sessionManagement ->
-                        sessionManagement
-                                .sessionFixation().migrateSession()
-                )
-                .csrf(csrf -> csrf.disable());
+                .csrf(csrf -> csrf.disable());  // Tắt CSRF để tránh lỗi cho các form POST
         return http.build();
     }
+
 
 }

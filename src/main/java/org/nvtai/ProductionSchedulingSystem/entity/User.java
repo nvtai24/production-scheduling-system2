@@ -15,16 +15,15 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long uid;
+    Integer uid;
 
-    Long eid;
+    @ManyToOne
+    @JoinColumn(name = "eid")
+    Employee employee;
 
     String username;
-
     String password;
-
     boolean active;
-
     String email;
 
     @ManyToMany(fetch = FetchType.EAGER)

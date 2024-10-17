@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Plan List</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="common-container">
+    <div class="page-title">
+        List of Production Plans
+    </div>
+
+    <table class="common-table">
+        <thead>
+        <tr>
+            <th>Plan ID</th>
+            <th>Plan Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Department</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Duyệt qua danh sách plans và hiển thị từng plan -->
+        <tr th:each="plan : ${plans}">
+            <td th:text="${plan.plid}"></td>
+            <td th:text="${plan.plname}"></td>
+            <td th:text="${plan.startdate}"></td>
+            <td th:text="${plan.enddate}"></td>
+            <td th:text="${plan.department.dname}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

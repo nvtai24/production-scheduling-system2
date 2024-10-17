@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Production Plan</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="center-container">
+    <div class="form">
+        <form class="form-add-plan" th:action="@{/productionplan/create}" method="POST">
+
+            <p class="title">Production Plan Create</p>
+
+            <div class="input-group">
+                <label for="planname">Plan name</label>
+                <input type="text" name="planname" id="planname" placeholder="Plan name" required>
+            </div>
+
+            <div class="form-options">
+                <div class="input-group option-item">
+                    <label for="from">From</label>
+                    <input type="date" name="from" id="from" required>
+                </div>
+
+                <div class="input-group option-item">
+                    <label for="to">To</label>
+                    <input type="date" name="to" id="to" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="department">Workshop:</label>
+                <select id="department" name="departmentId" class="form-select" required>
+                    <option th:each="department : ${departments}"
+                            th:value="${department.did}"
+                            th:text="${department.dname}">
+                    </option>
+                </select>
+            </div>
+
+            <table class="common-table">
+                <tr>
+                    <td>Product</td>
+                    <td>Quantity</td>
+                    <td>Estimated Effort</td>
+                </tr>
+                <tr th:each="p : ${products}">
+                    <td th:value="${p.pid}" th:text="${p.pname}"></td>
+                    <td><input type="text" th:name="'quantities[' + ${p.pid} + ']'" placeholder="Quantity"/></td>
+                    <td><input type="text" th:name="'efforts[' + ${p.pid} + ']'" placeholder="Effort"/></td>
+                </tr>
+            </table>
+
+            <button type="submit" class="btn-submit edit">Submit</button>
+            <button type="button" class="btn-cancel delete">Cancel</button>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>
