@@ -31,13 +31,10 @@ public class ProductionPlanDetailService {
         ProductionPlanDetailDTO planDetailsDTO = new ProductionPlanDetailDTO();
 
         Plan plan = planService.get(id);
-        planDetailsDTO.setPlanId(plan.getPlid());
-        planDetailsDTO.setPlanName(plan.getPlname());
-        planDetailsDTO.setStartDate(plan.getStartdate());
-        planDetailsDTO.setEndDate(plan.getEnddate());
+        planDetailsDTO.setPlan(plan);
 
         Department department = departmentService.getDepartmentById(plan.getDepartment().getDid());
-        planDetailsDTO.setDepartmentName(department.getDname());
+        planDetailsDTO.setDepartment(department);
 
         Employee manager = employeeService.getManagerByDid(department.getDid());
         planDetailsDTO.setManagerName(manager.getEname());
@@ -56,8 +53,6 @@ public class ProductionPlanDetailService {
         }
 
         planDetailsDTO.setProductDetails(productDetails);
-
-        // Console log to check data
 
         List<DailyProductionDTO> dailyProductions = new ArrayList<>();
 
@@ -78,5 +73,7 @@ public class ProductionPlanDetailService {
 
         return planDetailsDTO;
     }
+
+
 
 }

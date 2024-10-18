@@ -16,7 +16,7 @@ public class ProductionPlanListController {
 
     @GetMapping("/productionplan/list")
     public String listProductionPlans(Model model) {
-        List<Plan> plans = planService.getAllPlans();
+        List<Plan> plans = planService.getAvailablePlans();
 
         model.addAttribute("plans", plans);
 

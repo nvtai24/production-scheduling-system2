@@ -8,12 +8,12 @@
 </head>
 <body>
 <div class="common-container">
-    <div class="page-title" th:text="${planDetails.planName}">
-        <span th:text="${planDetails.planName}"></span>
+    <div class="page-title">
+        <span th:text="${planDetails.plan.plname}"></span>
     </div>
     <div id="production-plan-info">
-        <p><strong>Plan ID:</strong> <span th:text="${planDetails.planId}"></span></p>
-        <p><strong>Workshop:</strong> <span th:text="${planDetails.departmentName}"></span></p>
+        <p><strong>Plan ID:</strong> <span th:text="${planDetails.plan.plid}"></span></p>
+        <p><strong>Workshop:</strong> <span th:text="${planDetails.department.dname}"></span></p>
         <p><strong>Workshop Manager:</strong> <span th:text="${planDetails.managerName}"></span></p>
         <p><strong>General Plan:</strong></p>
     </div>

@@ -20,8 +20,16 @@ public class PlanService {
         return planRepository.findAll();
     }
 
+    public List<Plan> getAvailablePlans() {
+        return planRepository.findByIsdeletedFalse();
+    }
+
     public Plan get(Integer id) {
         return planRepository.findById(id).orElse(null);
+    }
+
+    public void delete(Integer id) {
+        planRepository.softDelete(id);
     }
 
     @Autowired
@@ -29,13 +37,32 @@ public class PlanService {
 
 
     public Plan createPlan(ProductionPlanDTO productionPlanDTO) {
-        Plan plan = PlanMapper.INSTANCE.dtoToPlan(productionPlanDTO);
+        Plan plan = new Plan();
+        plan.setPlname(productionPlanDTO.getPlanname());
+        plan.setStartdate(productionPlanDTO.getStartdate());
+        plan.setEnddate(productionPlanDTO.getEnddate());
 
         Department department = departmentService.getDepartmentById(productionPlanDTO.getDepartmentId());
 
         plan.setDepartment(department);
 
         return planRepository.save(plan);
+    }
+
+    public void updatePlan(ProductionPlanDTO productionPlanDTO, Integer plid) {
+        Plan existedPlan = planRepository.findByPlid(plid);
+
+        existedPlan.setPlname(productionPlanDTO.getPlanname());
+        existedPlan.setStartdate(productionPlanDTO.getStartdate());
+        existedPlan.setEnddate(productionPlanDTO.getEnddate());
+
+
+        Department newDep = departmentService.getDepartmentById(productionPlanDTO.getDepartmentId());
+
+        existedPlan.setDepartment(newDep);
+        existedPlan.setNote(productionPlanDTO.getNote());
+
+        planRepository.save(existedPlan);
     }
 
 

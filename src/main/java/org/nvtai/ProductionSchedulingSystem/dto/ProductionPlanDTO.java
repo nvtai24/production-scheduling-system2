@@ -10,10 +10,12 @@ import java.util.Map;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductionPlanDTO {
+    int planId;
     String planname;
-    Date from;
-    Date to;
+    Date startdate;
+    Date enddate;
     int departmentId;
-    private Map<Integer, Integer> quantities;
-    private Map<Integer, Float> efforts;
+    Map<Integer, Integer> quantities;
+    Map<Integer, Float> efforts;
+    String note;
 }

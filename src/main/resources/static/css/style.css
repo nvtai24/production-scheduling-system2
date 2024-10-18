@@ -9,11 +9,11 @@
     --label-color: #4b0082;
 
     --color-read: #4593e6;
-    --color-read-hover: #0056b3;
+    --color-read-hover: #1969bf;
     --color-edit: #ffc107;
-    --color-edit-hover: #e0a800;
+    --color-edit-hover: #bf930e;
     --color-delete: #dc3545;
-    --color-delete-hover: #c82333;
+    --color-delete-hover: #a3212d;
     --color-save-add: #28a745;
     --color-save-add-hover: #218838;
 }

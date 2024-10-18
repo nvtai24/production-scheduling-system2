@@ -23,4 +23,7 @@ public class Plan {
     @ManyToOne
     @JoinColumn(name = "did")
     Department department;
+
+    Boolean isdeleted = false;
+    String note;
 }
