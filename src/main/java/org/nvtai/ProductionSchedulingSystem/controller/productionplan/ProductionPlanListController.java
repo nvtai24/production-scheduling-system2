@@ -16,13 +16,11 @@ public class ProductionPlanListController {
 
     @GetMapping("/productionplan/list")
     public String listProductionPlans(Model model) {
-        // Lấy danh sách các plans từ service
         List<Plan> plans = planService.getAllPlans();
 
-        // Đưa danh sách plans vào model để hiển thị trong view
         model.addAttribute("plans", plans);
 
-        return "productionplan/list"; // Trả về trang HTML hiển thị danh sách plans
+        return "productionplan/list";
     }
 
 }

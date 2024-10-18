@@ -9,11 +9,17 @@ import org.nvtai.ProductionSchedulingSystem.repository.PlanHeaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PlanHeaderService {
 
     @Autowired
     private PlanHeaderRepository planHeaderRepository;
+
+    public List<PlanHeader> getPlanHeadersByPlanId(Integer planId) {
+        return planHeaderRepository.findByPlanPlid(planId);
+    }
 
     @Autowired
     private ProductService productService;

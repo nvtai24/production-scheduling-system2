@@ -27,7 +27,7 @@ public class MyUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
 
-        if (!user.isActive()) {
+        if (!user.getActive()) {
             throw new UsernameNotFoundException("User is not active");
         }
 

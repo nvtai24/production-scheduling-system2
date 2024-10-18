@@ -10,6 +10,8 @@ import java.util.List;
 public interface PlanHeaderRepository extends JpaRepository<PlanHeader, Integer> {
     PlanHeader findByPhid(int phid);
 
+    List<PlanHeader> findByPlanPlid(int plid);
+
     List<PlanHeader> findAll();
 
     void deleteByPhid(int phid);

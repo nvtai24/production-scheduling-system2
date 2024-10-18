@@ -1,31 +1,34 @@
 package org.nvtai.ProductionSchedulingSystem.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Date;
+
 @Entity
+@Table(name = "PlanDetails")
 @Data
-@Table(name = "Employees")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Employee {
+public class PlanDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer eid;
-
-    String ename;
-    String phoneNumber;
-    String address;
+    Integer pdid;
 
     @ManyToOne
-    @JoinColumn(name = "did")
-    Department department;
+    @JoinColumn(name = "phid")
+    PlanHeader planHeader;
 
     @ManyToOne
     @JoinColumn(name = "sid")
     Shift shift;
 
-    Boolean ismanager;
+    Date date;
+
+    Integer quantity;
+
+    String note;
+
 }

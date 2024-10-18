@@ -27,16 +27,15 @@ public class ProductionPlanCreateController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/productionplan/create")
+    @GetMapping("/productionplan/add")
     public String showForm(Model model) {
         List<Department> departments = departmentService.getDepartmentsByType("Production");
         List<Product> products = productService.getAllProducts();
 
-        // Truyền danh sách departments và products vào model
         model.addAttribute("departments", departments);
         model.addAttribute("products", products);
 
-        return "productionplan/create"; // Trả về trang create.html
+        return "productionplan/add";
     }
 
     @Autowired
@@ -45,7 +44,7 @@ public class ProductionPlanCreateController {
     @Autowired
     private PlanHeaderService planHeaderService;
 
-    @PostMapping("/productionplan/create")
+    @PostMapping("/productionplan/add")
     @Transactional
     public String submitForm(@ModelAttribute ProductionPlanDTO productionPlanDTO, Model model) {
         Plan plan = planService.createPlan(productionPlanDTO);

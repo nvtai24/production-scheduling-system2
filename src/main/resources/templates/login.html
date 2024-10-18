@@ -20,7 +20,6 @@
 
             <div class="input-group">
                 <label for="username">Username</label>
-                <!-- Giữ lại tên người dùng đã nhập khi có lỗi -->
                 <input type="text" name="username" id="username" placeholder="Username"
                        th:value="${param.username}" required>
             </div>
@@ -39,9 +38,8 @@
             </div>
             <button class="sign">Sign in</button>
 
-            <!-- Hiển thị thông báo lỗi nếu có -->
             <div th:if="${error}">
-                <p class="error" th:text="${error}"></p>
+                <p class="error-message" th:text="${error}"></p>
             </div>
         </form>
     </div>

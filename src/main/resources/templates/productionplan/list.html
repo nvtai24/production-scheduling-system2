@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Production Plan List</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
 </head>
 <body>
 <div class="common-container">
@@ -19,17 +21,38 @@
             <th>Plan Name</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Department</th>
+            <th>Department
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <!-- Duyệt qua danh sách plans và hiển thị từng plan -->
         <tr th:each="plan : ${plans}">
             <td th:text="${plan.plid}"></td>
             <td th:text="${plan.plname}"></td>
             <td th:text="${plan.startdate}"></td>
             <td th:text="${plan.enddate}"></td>
             <td th:text="${plan.department.dname}"></td>
+            <td>
+
+                <a th:href="@{/productionplan/detail(plid=${plan.plid})}">
+                    <button type="button" class="btn-icon btn-read">
+                        <i class="fa-sharp fa-solid fa-eye"></i>
+                    </button>
+                </a>
+
+                <a th:href="@{/productionplan/edit(plid=${plan.plid})}">
+                    <button type="button" class="btn-icon btn-edit">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                </a>
+
+                <a th:href="@{/productionplan/remove(plid=${plan.plid})}">
+                    <button type="button" class="btn-icon btn-delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </a>
+
+            </td>
         </tr>
         </tbody>
     </table>

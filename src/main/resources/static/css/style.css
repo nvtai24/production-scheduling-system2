@@ -7,6 +7,15 @@
     --border-color: #ddd;
     --error-color: #e74c3c;
     --label-color: #4b0082;
+
+    --color-read: #4593e6;
+    --color-read-hover: #0056b3;
+    --color-edit: #ffc107;
+    --color-edit-hover: #e0a800;
+    --color-delete: #dc3545;
+    --color-delete-hover: #c82333;
+    --color-save-add: #28a745;
+    --color-save-add-hover: #218838;
 }
 
 /* Common Body CSS */
@@ -17,6 +26,10 @@ body {
     height: 100vh;
     margin: 0;     /* padding: 20px; */
     box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
 }
 
 .common-container {
@@ -98,7 +111,7 @@ button {
 }
 
 button.edit {
-    background-color: #28a745;     /* Màu xanh lá cây */
+    background-color: var(--color-save-add);     /* Màu xanh lá cây */
 }
 
 button.delete {
@@ -106,11 +119,51 @@ button.delete {
 }
 
 button.edit:hover {
-    background-color: #218838;     /* Màu xanh lá cây đậm hơn khi hover */
+    background-color: var(--color-save-add-hover);     /* Màu xanh lá cây đậm hơn khi hover */
 }
 
 button.delete:hover {
     background-color: #c82333;     /* Màu đỏ đậm hơn khi hover */
+}
+
+
+.btn-save-add {
+    background-color: var(--color-save-add);
+}
+
+.btn-save-add:hover {
+    background-color: var(--color-save-add-hover);
+}
+
+.btn-icon {
+    min-width: 0;
+}
+
+
+.btn-read {
+    background-color: var(--color-read);
+}
+
+
+.btn-read:hover {
+    background-color: var(--color-read-hover);
+}
+
+
+.btn-edit {
+    background-color: var(--color-edit);     /* Màu vàng */
+}
+
+.btn-edit:hover {
+    background-color: var(--color-edit-hover);     /* Màu vàng đậm hơn khi hover */
+}
+
+.btn-delete {
+    background-color: var(--color-delete);     /* Màu đỏ */
+}
+
+.btn-delete:hover {
+    background-color: var(--color-delete-hover);     /* Màu đỏ đậm hơn khi hover */
 }
 
 

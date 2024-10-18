@@ -15,5 +15,5 @@ public class Salary {
     Integer sid;
 
     String slevel;
-    int salary;
+    Integer salary;
 }

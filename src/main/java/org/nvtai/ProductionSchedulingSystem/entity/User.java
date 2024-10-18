@@ -23,7 +23,7 @@ public class User {
 
     String username;
     String password;
-    boolean active;
+    Boolean active;
     String email;
 
     @ManyToMany(fetch = FetchType.EAGER)

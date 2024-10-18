@@ -20,6 +20,9 @@ public class PlanService {
         return planRepository.findAll();
     }
 
+    public Plan get(Integer id) {
+        return planRepository.findById(id).orElse(null);
+    }
 
     @Autowired
     private DepartmentService departmentService;
