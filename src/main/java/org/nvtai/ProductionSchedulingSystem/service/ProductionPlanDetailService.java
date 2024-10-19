@@ -62,6 +62,8 @@ public class ProductionPlanDetailService {
             for (PlanDetail planDetail : dailyProduction) {
                 DailyProductionDTO dailyProductionDTO = new DailyProductionDTO();
                 dailyProductionDTO.setDate(planDetail.getDate());
+                dailyProductionDTO.setProductId(planHeader.getProduct().getPid());
+                dailyProductionDTO.setProductName(planHeader.getProduct().getPname());
                 dailyProductionDTO.setShift(planDetail.getShift().getSname());
                 dailyProductionDTO.setQuantity(planDetail.getQuantity());
                 dailyProductionDTO.setNote(planDetail.getNote());

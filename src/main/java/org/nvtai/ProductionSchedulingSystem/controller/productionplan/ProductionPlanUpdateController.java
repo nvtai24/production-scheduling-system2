@@ -28,7 +28,6 @@ public class ProductionPlanUpdateController {
     @Autowired
     private ProductService productService;
 
-
     @GetMapping("/productionplan/edit")
     public String showForm(@RequestParam("plid") Integer id, Model model) {
         ProductionPlanDetailDTO planDetailsDTO = productionPlanDetailService.getProductionPlanDetail(id);
@@ -42,7 +41,6 @@ public class ProductionPlanUpdateController {
 
         return "productionplan/edit";
     }
-
 
     @Autowired
     private PlanService planService;
@@ -58,7 +56,6 @@ public class ProductionPlanUpdateController {
 
         planHeaderService.updatePlanHeader(productionPlanDTO, plid);
 
-//        return "redirect:/productionplan/detail?plid=" + id;
-        return "redirect:/productionplan/list";
+        return "redirect:/productionplan/detail?plid=" + plid;
     }
 }

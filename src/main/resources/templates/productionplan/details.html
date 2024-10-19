@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Production Plan Details</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 <body>
 <div class="common-container">
@@ -45,6 +46,8 @@
         <thead>
         <tr>
             <th>Date</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
             <th>Shift</th>
             <th>Quantity</th>
             <th>Note</th>
@@ -53,6 +56,8 @@
         <tbody>
         <tr th:each="dailyProduction : ${planDetails.dailyProductions}">
             <td th:text="${#dates.format(dailyProduction.date, 'dd/MM/yyyy')}"></td>
+            <td th:text="${dailyProduction.productId}"></td>
+            <td th:text="${dailyProduction.productName}"></td>
             <td th:text="${dailyProduction.shift}"></td>
             <td th:text="${dailyProduction.quantity}"></td>
             <td th:text="${dailyProduction.note}"></td>

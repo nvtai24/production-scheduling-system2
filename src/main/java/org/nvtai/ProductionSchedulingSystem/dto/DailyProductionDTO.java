@@ -16,5 +16,4 @@ public class DailyProductionDTO {
     String shift;
     int quantity;
     String note;
-
 }
