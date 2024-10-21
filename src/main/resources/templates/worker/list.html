@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker List</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+</head>
+<body>
+<div class="common-container">
+
+    <div class="page-title">Worker List</div>
+
+    <table class="common-table employee-table">
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th>Full Name</th>
+            <th>Department</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+            <th>Salary Level</th>
+            <th>Hourly Rate</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="worker, stat : ${workers}">
+            <td>
+                <span th:text="${stat.count}"></span>
+                <input type="hidden" name="eid" th:value="${worker.eid}"/>
+            </td>
+            <td>
+                <!-- Không cho phép chỉnh sửa tên, chỉ hiển thị dưới dạng span -->
+                <span th:text="${worker.ename}"></span>
+            </td>
+            <td>
+                <span th:text="${worker.department.dname}" class="text-display"></span>
+                <select name="did" class="form-select edit-input" style="display:none;">
+                    <option th:each="dept : ${departments}"
+                            th:value="${dept.did}"
+                            th:text="${dept.dname}"
+                            th:selected="${dept.did == worker.department.did}">
+                    </option>
+                </select>
+            </td>
+            <td>
+                <span th:text="${worker.phoneNumber}" class="text-display"></span>
+                <input type="text" name="phonenumber" th:value="${worker.phoneNumber}" class="edit-input"
+                       style="display:none;"/>
+            </td>
+            <td>
+                <span th:text="${worker.address}" class="text-display"></span>
+                <input type="text" name="address" th:value="${worker.address}" class="edit-input"
+                       style="display:none;"/>
+            </td>
+            <td>
+                <span th:text="${worker.salary.slevel}" class="text-display"></span>
+                <select name="sid" class="form-select edit-input" style="display:none;"
+                        onchange="updateHourlyRate(this)">
+                    <option th:each="s : ${salaries}"
+                            th:value="${s.sid}"
+                            th:data-salary="${s.salary}"
+                            th:text="${s.slevel}"
+                            th:selected="${s.sid == worker.salary.sid}">
+                    </option>
+                </select>
+            </td>
+            <td>
+                <span th:text="${worker.salary.salary + 'K'}" class="text-display"></span>
+                <span class="hourly-rate edit-input" th:text="${worker.salary.salary + 'K'}"
+                      style="display:none;"></span>
+            </td>
+            <td class="form-action-inline">
+
+                <button title="Edit" type="button" class="btn-icon btn-edit" onclick="toggleEdit(this)">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+                <form th:action="@{/worker/remove}" method="post" onsubmit="return confirmDelete();" style="display:inline;">
+                    <input type="hidden" name="eid" th:value="${worker.eid}"/>
+                    <button title="Remove" type="submit" class="btn-icon btn-delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script th:src="@{/js/formAction.js}"></script>
+
+</body>
+</html>

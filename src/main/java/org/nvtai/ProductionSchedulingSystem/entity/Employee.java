@@ -1,6 +1,5 @@
 package org.nvtai.ProductionSchedulingSystem.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -25,7 +24,9 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "sid")
-    Shift shift;
+    Salary salary;
 
-    Boolean ismanager;
+    Boolean ismanager = false;
+
+    Boolean isdeleted = false;
 }

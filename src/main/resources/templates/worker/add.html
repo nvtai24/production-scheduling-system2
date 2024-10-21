@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Add Worker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="center-container">
+    <div class="form">
+        <div class="title">Add New Worker</div>
+
+        <form class="form-add-employee" th:action="@{/worker/add}" method="POST">
+            <!-- Employee Name -->
+            <div class="input-group">
+                <label for="ename">Employee Name</label>
+                <input type="text" name="ename" id="ename" placeholder="Employee Name" required>
+            </div>
+
+            <!-- Department Select -->
+            <div class="input-group">
+                <label for="department">Department</label>
+                <select id="department" name="did" class="form-select" required>
+                    <option th:each="department : ${departments}"
+                            th:value="${department.did}"
+                            th:text="${department.dname}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="input-group">
+                <label for="phonenumber">Phone Number</label>
+                <input type="text" name="phonenumber" id="phonenumber" placeholder="Phone Number" required>
+            </div>
+
+            <!-- Address -->
+            <div class="input-group">
+                <label for="address">Address</label>
+                <input type="text" name="address" id="address" placeholder="Address" required>
+            </div>
+
+            <!-- Shift Select -->
+            <div class="input-group">
+                <label for="shift">Shift</label>
+                <select id="shift" name="sid" class="form-select" required>
+                    <option th:each="salary : ${salaries}"
+                            th:value="${salary.sid}"
+                            th:text="${salary.slevel} + ' - ' + ${salary.salary} +'K'">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Buttons -->
+            <button type="submit" class="btn btn-save-add">Save</button>
+            <button type="button" class="btn btn-delete" onclick="cancelEdit()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Function to handle cancel button
+    function cancelEdit() {
+        window.history.back();  // This will navigate back to the previous page
+    }
+</script>
+
+</body>
+</html>

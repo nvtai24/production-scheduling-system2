@@ -4,135 +4,148 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Edit Production Plan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div class="common-container">
-    <div class="page-title">Edit Production Plan</div>
+<div class="center-container">
+    <div class="form">
+        <div class="title">Edit Production Plan</div>
 
-    <form
-            th:action="@{/productionplan/edit}"
-            method="POST"
-            class="form-edit-plan"
-    >
-        <div class="form-edit-header">
+        <form
+                th:action="@{/productionplan/edit}"
+                method="POST"
+                class="form-edit-plan"
+        >
+            <div class="form-edit-header">
 
-            <div id="production-plan-info">
-                <div class="input-group">
-                    <strong>Plan ID:</strong>
-                    <span th:text="${planDetails.plan.plid}"></span>
-                    <input type="hidden" name="plid" th:value="${planDetails.plan.plid}"/>
-                </div>
+                <div id="production-plan-info">
+                    <div class="input-group" style="color: var(--primary-color)">
+                        Plan ID:
+                        <span th:text="${planDetails.plan.plid}"></span>
+                        <input type="hidden" name="plid" th:value="${planDetails.plan.plid}"/>
+                    </div>
 
-                <div class="form-options input-group">
-                    <div class="option-item">
-                        <label for="planName"><strong>Plan Name:</strong></label>
-                        <input
-                                type="text"
-                                id="planName"
-                                name="planname"
-                                th:value="${planDetails.plan.plname}"
-                                required
+                    <div class="form-options input-group">
+                        <div class="option-item">
+                            <label for="planName">Plan Name:</label>
+                            <input
+                                    type="text"
+                                    id="planName"
+                                    name="planname"
+                                    th:value="${planDetails.plan.plname}"
+                                    required
+                            />
+                        </div>
+
+                        <div class="option-item">
+                            <label for="department">Workshop:</label>
+                            <select
+                                    id="department"
+                                    name="departmentId"
+                                    class="form-select"
+                                    required
+                            >
+                                <option th:each="dept : ${departments}"
+                                        th:value="${dept.did}"
+                                        th:text="${dept.dname}"
+                                        th:selected="${dept.dname == planDetails.department.dname}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-options input-group">
+                        <div class="option-item">
+                            <label for="startDate">Start Date:</label>
+                            <input
+                                    type="date"
+                                    id="startDate"
+                                    name="startdate"
+                                    th:value="${#dates.format(planDetails.plan.startdate, 'yyyy-MM-dd')}"
+                                    required
+                            />
+                        </div>
+
+                        <div class="option-item">
+                            <label for="endDate">End Date:</label>
+                            <input
+                                    type="date"
+                                    id="endDate"
+                                    name="enddate"
+                                    th:value="${#dates.format(planDetails.plan.enddate, 'yyyy-MM-dd')}"
+                                    required
+                            />
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="note">Note:</label>
+                        <input type="text" id="note" name="note" required
+                               th:value="${planDetails.plan.note}"
                         />
                     </div>
-
-                    <div class="option-item">
-                        <label for="department"><strong>Workshop:</strong></label>
-                        <select
-                                id="department"
-                                name="departmentId"
-                                class="form-select"
-                                required
-                        >
-                            <option th:each="dept : ${departments}"
-                                    th:value="${dept.did}"
-                                    th:text="${dept.dname}"
-                                    th:selected="${dept.dname == planDetails.department.dname}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-options input-group">
-                    <div class="option-item">
-                        <label for="startDate"><strong>Start Date:</strong></label>
-                        <input
-                                type="date"
-                                id="startDate"
-                                name="startdate"
-                                th:value="${#dates.format(planDetails.plan.startdate, 'yyyy-MM-dd')}"
-                                required
-                        />
-                    </div>
-
-                    <div class="option-item">
-                        <label for="endDate"><strong>End Date:</strong></label>
-                        <input
-                                type="date"
-                                id="endDate"
-                                name="enddate"
-                                th:value="${#dates.format(planDetails.plan.enddate, 'yyyy-MM-dd')}"
-                                required
-                        />
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="note"><strong>Note:</strong></label>
-                    <input type="text" id="note" name="note" required
-                           th:value="${planDetails.plan.note}"
-                    />
                 </div>
             </div>
-        </div>
 
-        <table id="production-plan-table" class="common-table">
-            <thead>
-            <tr>
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Quantity (Piece)</th>
-                <th>Estimated Effort (Hourly)</th>
-            </tr>
-            </thead>
-            <tbody>
+            <table id="production-plan-table" class="common-table">
+                <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity (Piece)</th>
+                    <th>Estimated Effort (Hourly)</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
 
-            <tr th:each="product : ${products}">
-                <td th:text="${product.pid}"></td>
-                <td th:text="${product.pname}"></td>
-                <td>
-                    <input
-                            type="number"
-                            th:name="'quantities[' + ${product.pid} + ']'"
-                            th:value="${planDetails.getProductDetailByPid(product.pid) != null ? planDetails.getProductDetailByPid(product.pid).quantity : ''}"
-                    />
-                </td>
-                <td>
-                    <input
-                            type="number"
-                            step="0.1"
-                            th:name="'efforts[' + ${product.pid} + ']'"
-                            th:value="${planDetails.getProductDetailByPid(product.pid) != null ? planDetails.getProductDetailByPid(product.pid).effort : ''}"
-                    />
-                </td>
-            </tr>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.pid}"></td>
+                    <td th:text="${product.pname}"></td>
+                    <td>
+                        <input
+                                type="number"
+                                th:name="'quantities[' + ${product.pid} + ']'"
+                                class="quantity-input"
+                                th:value="${planDetails.getProductDetailByPid(product.pid) != null ? planDetails.getProductDetailByPid(product.pid).quantity : ''}"
+                        />
+                    </td>
+                    <td>
+                        <input
+                                type="number"
+                                step="0.1"
+                                th:name="'efforts[' + ${product.pid} + ']'"
+                                class="effort-input"
+                                th:value="${planDetails.getProductDetailByPid(product.pid) != null ? planDetails.getProductDetailByPid(product.pid).effort : ''}"
+                        />
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn-icon btn-delete" onclick="clear(this)"><i
+                                class="fa-solid fa-xmark"></i></button>
+                    </td>
+
+                </tr>
 
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
 
-        <button type="submit" class="btn btn-save-add">Save</button>
-        <button type="button" class="btn btn-delete" onclick="cancelEdit()">Cancel</button>
-    </form>
+            <button type="submit" class="btn btn-save-add">Save</button>
+            <button type="button" class="btn btn-delete" onclick="cancelEdit()">Cancel</button>
+        </form>
+    </div>
 </div>
-
 
 <script>
     function cancelEdit() {
-        if (confirm("Are you sure you want to cancel editing this production plan?")) {
+        if (confirm("Are you sure you want to cancel?")) {
             window.location.href = "/productionplan/list";
         }
     }
 </script>
+
+<script th:src="@{/js/formAction.js}"></script>
 </body>
 </html>

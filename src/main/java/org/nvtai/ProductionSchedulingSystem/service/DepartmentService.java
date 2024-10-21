@@ -21,6 +21,8 @@ public class DepartmentService {
         return departmentRepository.findByType(type);
     }
 
+
+
     public Department getDepartmentById(int id) {
         return departmentRepository.findByDid(id);
     }

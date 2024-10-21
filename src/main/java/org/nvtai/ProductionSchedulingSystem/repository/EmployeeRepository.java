@@ -24,4 +24,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Employee save(Employee employee);
 
+    List<Employee> findByIsmanagerAndIsdeleted(boolean ismanager, boolean isdeleted);
+
+    default void softDelete(int eid) {
+        Employee employee = findByEid(eid);
+        employee.setIsdeleted(true);
+        save(employee);
+    };
+
+
 }

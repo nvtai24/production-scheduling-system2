@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Production Plan</title>
+    <title>Add Production Plan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="center-container">
     <div class="form">
+        <div class="title">Production Plan Create</div>
+
         <form class="form-add-plan" th:action="@{/productionplan/add}" method="POST">
-
-            <p class="title">Production Plan Create</p>
-
             <div class="input-group">
                 <label for="planname">Plan name</label>
                 <input type="text" name="planname" id="planname" placeholder="Plan name" required>
@@ -41,23 +41,31 @@
             </div>
 
             <table class="common-table">
+                <thead>
                 <tr>
-                    <td>Product</td>
-                    <td>Quantity</td>
-                    <td>Estimated Effort</td>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Estimated Effort</th>
+                    <th></th>
                 </tr>
+                </thead>
+                <tbody>
                 <tr th:each="p : ${products}">
-                    <td th:value="${p.pid}" th:text="${p.pname}"></td>
-                    <td><input type="text" th:name="'quantities[' + ${p.pid} + ']'" placeholder="Quantity"/></td>
-                    <td><input type="text" th:name="'efforts[' + ${p.pid} + ']'" placeholder="Effort"/></td>
+                    <td th:text="${p.pname}"></td>
+                    <td><input type="text" th:name="'quantities[' + ${p.pid} + ']'" placeholder="Quantity" class="quantity-input"/></td>
+                    <td><input type="text" th:name="'efforts[' + ${p.pid} + ']'" placeholder="Effort" class="effort-input"/></td>
+                    <td><button type="button" class="btn-icon btn-delete" onclick="clear(this)"><i class="fa-solid fa-xmark"></i></button></td>
                 </tr>
+                </tbody>
             </table>
 
-            <button type="submit" class="btn-submit edit">Submit</button>
-            <button type="button" class="btn-cancel delete">Cancel</button>
+            <button type="submit" class="btn btn-save-add">Save</button>
+            <button type="button" class="btn btn-delete" onclick="cancelEdit()">Cancel</button>
 
         </form>
     </div>
 </div>
+<script th:src="@{/js/formAction.js}"></script>
+
 </body>
 </html>

@@ -35,7 +35,7 @@ public class ProductionPlanCreateController {
         model.addAttribute("departments", departments);
         model.addAttribute("products", products);
 
-        return "productionplan/add";
+        return "productionplan/add123";
     }
 
     @Autowired

@@ -85,9 +85,9 @@ a {
 
 .page-title {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.8em;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--label-color);
     font-weight: bold;
 }
 
@@ -139,16 +139,13 @@ button.delete:hover {
     min-width: 0;
 }
 
-
 .btn-read {
     background-color: var(--color-read);
 }
 
-
 .btn-read:hover {
     background-color: var(--color-read-hover);
 }
-
 
 .btn-edit {
     background-color: var(--color-edit);     /* Màu vàng */
@@ -158,14 +155,15 @@ button.delete:hover {
     background-color: var(--color-edit-hover);     /* Màu vàng đậm hơn khi hover */
 }
 
+
+.btn-cancel,
 .btn-delete {
     background-color: var(--color-delete);     /* Màu đỏ */
 }
-
+.btn-cancel:hover,
 .btn-delete:hover {
     background-color: var(--color-delete-hover);     /* Màu đỏ đậm hơn khi hover */
 }
-
 
 /* Login Page Specific CSS */
 .form {
@@ -179,21 +177,21 @@ button.delete:hover {
 }
 
 .form .title {
+    font-weight: bold;
     font-size: 1.8em;
     margin-bottom: 25px;
     text-align: center;
-    color: var(--primary-color);
+    color: var(--label-color);
 }
 
 .input-group {
     margin-bottom: 20px;
 }
 
-
 label {
     display: block;
     margin-bottom: 8px;
-    color: var(--label-color);
+    color: var(--primary-color);
 }
 
 input {
@@ -280,6 +278,8 @@ input {
 #remember-me-text p {
     white-space: nowrap;
 }
+
+
 /* Production Plan Page Specific CSS */
 body.production-plan-page {
     font-family: Arial, sans-serif;

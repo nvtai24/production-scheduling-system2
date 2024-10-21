@@ -1,6 +1,7 @@
 package org.nvtai.ProductionSchedulingSystem.service;
 
 import org.nvtai.ProductionSchedulingSystem.dto.DailyProductionDTO;
+import org.nvtai.ProductionSchedulingSystem.dto.DailyProductionSummaryDTO;
 import org.nvtai.ProductionSchedulingSystem.dto.ProductDetailDTO;
 import org.nvtai.ProductionSchedulingSystem.dto.ProductionPlanDetailDTO;
 import org.nvtai.ProductionSchedulingSystem.entity.*;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductionPlanDetailService {
@@ -74,6 +77,35 @@ public class ProductionPlanDetailService {
         planDetailsDTO.setDailyProductions(dailyProductions);
 
         return planDetailsDTO;
+    }
+
+
+
+
+    public List<DailyProductionSummaryDTO> summarizeDailyProduction(List<DailyProductionDTO> dailyProductions) {
+        // Sử dụng Map để nhóm các sản phẩm theo ngày và sản phẩm, sau đó tính tổng số lượng
+        Map<String, DailyProductionSummaryDTO> summaryMap = new HashMap<>();
+
+        for (DailyProductionDTO dailyProduction : dailyProductions) {
+            String key = dailyProduction.getDate() + "_" + dailyProduction.getProductId(); // Tạo key để nhóm theo ngày và sản phẩm
+
+            // Nếu đã tồn tại trong Map, cộng thêm số lượng
+            if (summaryMap.containsKey(key)) {
+                DailyProductionSummaryDTO summary = summaryMap.get(key);
+                summary.setTotalQuantity(summary.getTotalQuantity() + dailyProduction.getQuantity());
+            } else {
+                // Nếu chưa tồn tại, tạo mới
+                DailyProductionSummaryDTO newSummary = new DailyProductionSummaryDTO();
+                newSummary.setDate(dailyProduction.getDate());
+                newSummary.setProductId(dailyProduction.getProductId());
+                newSummary.setProductName(dailyProduction.getProductName());
+                newSummary.setTotalQuantity(dailyProduction.getQuantity());
+                summaryMap.put(key, newSummary);
+            }
+        }
+
+        // Trả về danh sách đã tổng hợp
+        return new ArrayList<>(summaryMap.values());
     }
 
 

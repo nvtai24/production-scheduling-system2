@@ -13,7 +13,7 @@ public class ProductionPlanDeleteController {
     private PlanService planService;
 
     @PostMapping(value = "/productionplan/remove")
-    public String removeProductionPlan(@RequestParam("plid") Integer id) {
+    public String removeProductionPlan(@RequestParam("plid") int id) {
         planService.delete(id);
 
         return "redirect:/productionplan/list";

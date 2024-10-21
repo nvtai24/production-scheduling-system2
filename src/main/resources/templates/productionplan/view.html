@@ -43,31 +43,28 @@
     </table>
 
     <div class="sub-title">
-        The detailed production plan is listed in the table below:
+        The daily production plan is listed in the table below:
     </div>
 
-        <table class="common-table">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Shift</th>
-                <th>Quantity</th>
-                <th>Note</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="dailyProduction : ${planDetails.dailyProductions}">
-                <td th:text="${#dates.format(dailyProduction.date, 'dd/MM/yyyy')}"></td>
-                <td th:text="${dailyProduction.productId}"></td>
-                <td th:text="${dailyProduction.productName}"></td>
-                <td th:text="${dailyProduction.shift}"></td>
-                <td th:text="${dailyProduction.quantity}"></td>
-                <td th:text="${dailyProduction.note}"></td>
-            </tr>
-            </tbody>
-        </table>
+    <table class="common-table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Total Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="summary : ${summarizedDailyProductions}">
+            <td th:text="${#dates.format(summary.date, 'dd/MM/yyyy')}"></td>
+            <td th:text="${summary.productId}"></td>
+            <td th:text="${summary.productName}"></td>
+            <td th:text="${summary.totalQuantity}"></td>
+        </tr>
+        </tbody>
+    </table>
+
 
 </div>
 
