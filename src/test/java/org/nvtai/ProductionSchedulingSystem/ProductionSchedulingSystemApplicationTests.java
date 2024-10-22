@@ -1,13 +1,12 @@
 package org.nvtai.ProductionSchedulingSystem;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.Test;
 
-@SpringBootTest
-class ProductionSchedulingSystemApplicationTests {
+@org.nvtai.ProductionSchedulingSystem.SpringBootTest
+public class ProductionSchedulingSystemApplicationTests {
 
 	@Test
-	void contextLoads() {
+    public void contextLoads() {
 	}
 
 }

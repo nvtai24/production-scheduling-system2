@@ -21,3 +21,8 @@ spring:
       org:
         springframework:
           security: DEBUG
+  devtools:
+    restart:
+      enabled=true:
+    livereload:
+        enabled=true:

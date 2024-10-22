@@ -4,60 +4,61 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Add Worker</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/output.css}">
 </head>
-<body>
-<div class="center-container">
-    <div class="form">
-        <div class="title">Add New Worker</div>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
 
-        <form class="form-add-employee" th:action="@{/worker/add}" method="POST">
-            <!-- Employee Name -->
-            <div class="input-group">
-                <label for="ename">Employee Name</label>
-                <input type="text" name="ename" id="ename" placeholder="Employee Name" required>
-            </div>
+<div class="w-full max-w-lg bg-white shadow-md rounded-lg p-8">
+    <h2 class="text-2xl font-semibold text-gray-700 text-center mb-6">Add New Worker</h2>
 
-            <!-- Department Select -->
-            <div class="input-group">
-                <label for="department">Department</label>
-                <select id="department" name="did" class="form-select" required>
-                    <option th:each="department : ${departments}"
-                            th:value="${department.did}"
-                            th:text="${department.dname}">
-                    </option>
-                </select>
-            </div>
+    <form class="space-y-4" th:action="@{/worker/add}" method="POST">
+        <!-- Employee Name -->
+        <div class="input-group">
+            <label for="ename" class="block text-sm font-medium text-gray-700">Employee Name</label>
+            <input type="text" name="ename" id="ename" placeholder="Employee Name"
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+        </div>
 
-            <!-- Phone Number -->
-            <div class="input-group">
-                <label for="phonenumber">Phone Number</label>
-                <input type="text" name="phonenumber" id="phonenumber" placeholder="Phone Number" required>
-            </div>
+        <!-- Department Select -->
+        <div class="input-group">
+            <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+            <select id="department" name="did" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                <option th:each="department : ${departments}"
+                        th:value="${department.did}"
+                        th:text="${department.dname}"></option>
+            </select>
+        </div>
 
-            <!-- Address -->
-            <div class="input-group">
-                <label for="address">Address</label>
-                <input type="text" name="address" id="address" placeholder="Address" required>
-            </div>
+        <!-- Phone Number -->
+        <div class="input-group">
+            <label for="phonenumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+            <input type="text" name="phonenumber" id="phonenumber" placeholder="Phone Number"
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+        </div>
 
-            <!-- Shift Select -->
-            <div class="input-group">
-                <label for="shift">Shift</label>
-                <select id="shift" name="sid" class="form-select" required>
-                    <option th:each="salary : ${salaries}"
-                            th:value="${salary.sid}"
-                            th:text="${salary.slevel} + ' - ' + ${salary.salary} +'K'">
-                    </option>
-                </select>
-            </div>
+        <!-- Address -->
+        <div class="input-group">
+            <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+            <input type="text" name="address" id="address" placeholder="Address"
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+        </div>
 
-            <!-- Buttons -->
-            <button type="submit" class="btn btn-save-add">Save</button>
-            <button type="button" class="btn btn-delete" onclick="cancelEdit()">Cancel</button>
-        </form>
-    </div>
+        <!-- Shift Select -->
+        <div class="input-group">
+            <label for="shift" class="block text-sm font-medium text-gray-700">Shift</label>
+            <select id="shift" name="sid" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                <option th:each="salary : ${salaries}"
+                        th:value="${salary.sid}"
+                        th:text="${salary.slevel} + ' - ' + ${salary.salary} +'K'"></option>
+            </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-6 flex justify-between">
+            <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Save</button>
+            <button type="button" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700" onclick="cancelEdit()">Cancel</button>
+        </div>
+    </form>
 </div>
 
 <script>

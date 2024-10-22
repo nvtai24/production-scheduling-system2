@@ -4,139 +4,91 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Edit Production Plan</title>
+    <link rel="stylesheet" th:href="@{/css/output.css}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
-<body>
-<div class="center-container">
-    <div class="form">
-        <div class="title">Edit Production Plan</div>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
 
-        <form
-                th:action="@{/productionplan/edit}"
-                method="POST"
-                class="form-edit-plan"
-        >
-            <div class="form-edit-header">
+<div class="w-full max-w-4xl bg-white shadow-md rounded-lg p-8">
+    <h2 class="text-2xl font-semibold text-gray-700 text-center">Edit Production Plan</h2>
 
-                <div id="production-plan-info">
-                    <div class="input-group" style="color: var(--primary-color)">
-                        Plan ID:
-                        <span th:text="${planDetails.plan.plid}"></span>
-                        <input type="hidden" name="plid" th:value="${planDetails.plan.plid}"/>
-                    </div>
+    <form class="space-y-4" th:action="@{/productionplan/edit}" method="POST">
+        <div class="input-group">
+            <label for="planname" class="block text-sm font-medium text-gray-700">Plan Name</label>
+            <input type="text" name="planname" id="planname" th:value="${planDetails.plan.plname}"
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+        </div>
 
-                    <div class="form-options input-group">
-                        <div class="option-item">
-                            <label for="planName">Plan Name:</label>
-                            <input
-                                    type="text"
-                                    id="planName"
-                                    name="planname"
-                                    th:value="${planDetails.plan.plname}"
-                                    required
-                            />
-                        </div>
-
-                        <div class="option-item">
-                            <label for="department">Workshop:</label>
-                            <select
-                                    id="department"
-                                    name="departmentId"
-                                    class="form-select"
-                                    required
-                            >
-                                <option th:each="dept : ${departments}"
-                                        th:value="${dept.did}"
-                                        th:text="${dept.dname}"
-                                        th:selected="${dept.dname == planDetails.department.dname}">
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-options input-group">
-                        <div class="option-item">
-                            <label for="startDate">Start Date:</label>
-                            <input
-                                    type="date"
-                                    id="startDate"
-                                    name="startdate"
-                                    th:value="${#dates.format(planDetails.plan.startdate, 'yyyy-MM-dd')}"
-                                    required
-                            />
-                        </div>
-
-                        <div class="option-item">
-                            <label for="endDate">End Date:</label>
-                            <input
-                                    type="date"
-                                    id="endDate"
-                                    name="enddate"
-                                    th:value="${#dates.format(planDetails.plan.enddate, 'yyyy-MM-dd')}"
-                                    required
-                            />
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="note">Note:</label>
-                        <input type="text" id="note" name="note" required
-                               th:value="${planDetails.plan.note}"
-                        />
-                    </div>
-                </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="input-group">
+                <label for="from" class="block text-sm font-medium text-gray-700">Start Date</label>
+                <input type="date" name="startdate" id="from" th:value="${#dates.format(planDetails.plan.startdate, 'yyyy-MM-dd')}"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
             </div>
 
-            <table id="production-plan-table" class="common-table">
-                <thead>
-                <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Quantity (Piece)</th>
-                    <th>Estimated Effort (Hourly)</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
+            <div class="input-group">
+                <label for="to" class="block text-sm font-medium text-gray-700">End Date</label>
+                <input type="date" name="enddate" id="to" th:value="${#dates.format(planDetails.plan.enddate, 'yyyy-MM-dd')}"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+            </div>
+        </div>
 
-                <tr th:each="product : ${products}">
-                    <td th:text="${product.pid}"></td>
-                    <td th:text="${product.pname}"></td>
-                    <td>
-                        <input
-                                type="number"
-                                th:name="'quantities[' + ${product.pid} + ']'"
-                                class="quantity-input"
-                                th:value="${planDetails.getProductDetailByPid(product.pid) != null ? planDetails.getProductDetailByPid(product.pid).quantity : ''}"
-                        />
-                    </td>
-                    <td>
-                        <input
-                                type="number"
-                                step="0.1"
-                                th:name="'efforts[' + ${product.pid} + ']'"
-                                class="effort-input"
-                                th:value="${planDetails.getProductDetailByPid(product.pid) != null ? planDetails.getProductDetailByPid(product.pid).effort : ''}"
-                        />
-                    </td>
+        <div class="input-group">
+            <label for="department" class="block text-sm font-medium text-gray-700">Workshop:</label>
+            <select id="department" name="departmentId"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                <option th:each="dept : ${departments}" th:value="${dept.did}" th:text="${dept.dname}"
+                        th:selected="${dept.dname == planDetails.department.dname}"></option>
+            </select>
+        </div>
 
-                    <td>
-                        <button type="button" class="btn-icon btn-delete" onclick="clear(this)"><i
-                                class="fa-solid fa-xmark"></i></button>
-                    </td>
+        <div class="input-group">
+            <label for="note" class="block text-sm font-medium text-gray-700">Note</label>
+            <input type="text" name="note" id="note" th:value="${planDetails.plan.note}"
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+        </div>
 
-                </tr>
+        <table class="min-w-full bg-white shadow-md rounded-md">
+            <thead class="bg-gray-50 border-b">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estimated Effort</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+            <tr th:each="product : ${products}">
+                <td class="px-6 py-4 whitespace-nowrap" th:text="${product.pname}"></td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <input type="number" th:name="'quantities[' + ${product.pid} + ']'" placeholder="Quantity"
+                           class="quantity-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           th:value="${planDetails.getProductDetailByPid(product.pid) != null ? planDetails.getProductDetailByPid(product.pid).quantity : ''}">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <input type="number" step="0.1" th:name="'efforts[' + ${product.pid} + ']'" placeholder="Effort"
+                           class="effort-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           th:value="${planDetails.getProductDetailByPid(product.pid) != null ? planDetails.getProductDetailByPid(product.pid).effort : ''}">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <button type="button" class="text-red-600 hover:text-red-800" onclick="clearInputs(this)">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-
-                </tbody>
-            </table>
-
-            <button type="submit" class="btn btn-save-add">Save</button>
-            <button type="button" class="btn btn-delete" onclick="cancelEdit()">Cancel</button>
-        </form>
-    </div>
+        <div class="mt-4">
+            <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-blue-700">Save</button>
+        </div>
+        <div class="mt-2">
+            <button type="button" class="bg-red-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-red-700" onclick="cancelEdit()">Cancel</button>
+        </div>
+    </form>
 </div>
+
+<script th:src="@{/js/formAction.js}"></script>
 
 <script>
     function cancelEdit() {
@@ -146,6 +98,5 @@
     }
 </script>
 
-<script th:src="@{/js/formAction.js}"></script>
 </body>
 </html>

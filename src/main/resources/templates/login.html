@@ -7,45 +7,58 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/output.css}"> <!-- Tệp Tailwind CSS đã biên dịch -->
 </head>
 
 <body>
 
-<div class="center-container">
-    <div class="form">
-        <form class="form-login" th:action="@{/login}" method="POST">
+<div class="py-16">
+    <div class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+        <div class="hidden lg:block lg:w-1/2 bg-cover"
+             th:style="'background-image: url(' + @{/images/home.jpg} + ')'">
+        </div>
+        <div class="w-full p-8 lg:w-1/2">
+            <h2 class="text-2xl font-semibold text-gray-700 text-center">ABC Company</h2>
+            <p class="text-xl text-gray-600 text-center">Welcome back!</p>
 
-            <p class="title">LOGIN</p>
-
-            <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username" placeholder="Username"
-                       th:value="${param.username}" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Password" required>
-                <div class="options">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember-me" name="remember-me">
-                        <label id="remember-me-text" for="remember-me"><p>Remember me</p></label>
-                    </div>
-                    <div class="forgot">
-                        <a rel="noopener noreferrer" href="#">Forgot Password?</a>
-                    </div>
+            <form th:action="@{/login}" method="POST">
+                <div class="mt-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
+                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                           type="text" name="username" id="username" placeholder="Username" th:value="${param.username}" required />
                 </div>
-            </div>
-            <button class="sign">Sign in</button>
+                <div class="mt-4">
+                    <div class="flex justify-between">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+<!--                        <a href="#" class="text-xs text-gray-500">Forgot Password?</a>-->
+                    </div>
+                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                           type="password" name="password" id="password" placeholder="Password" required />
+                </div>
+                <div class="mt-4 flex items-center">
+                    <input type="checkbox" id="remember-me" name="remember-me" class="mr-2">
+                    <label class="text-gray-700 text-sm" for="remember-me">Remember me</label>
+                </div>
+                <div class="mt-8">
+                    <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600" type="submit">
+                        Login
+                    </button>
+                </div>
+            </form>
 
-            <div th:if="${error}">
-                <p class="error-message" th:text="${error}"></p>
+            <div th:if="${error}" class="mt-4">
+                <p class="text-red-500 text-xs italic" th:text="${error}"></p>
             </div>
-        </form>
+
+<!--            <div class="mt-4 flex items-center justify-between">-->
+<!--                <span class="border-b w-1/5 md:w-1/4"></span>-->
+<!--                <a href="#" class="text-xs text-gray-500 uppercase">or sign up</a>-->
+<!--                <span class="border-b w-1/5 md:w-1/4"></span>-->
+<!--            </div>-->
+        </div>
     </div>
 </div>
 
 <script th:src="@{/js/rememberMe.js}"></script>
 </body>
-
 </html>

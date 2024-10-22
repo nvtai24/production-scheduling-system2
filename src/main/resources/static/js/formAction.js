@@ -1,68 +1,69 @@
-function clear(element) {
+function clearInputs(element) {
+    // Find the closest row that contains the button
     let row = element.closest('tr');
 
-    // Clear values in the inputs
-    row.querySelector('.quantity-input').value = '';
-    row.querySelector('.effort-input').value = '';
-}
+    // Find the input fields inside that row
+    let quantityInput = row.querySelector('.quantity-input');
+    let effortInput = row.querySelector('.effort-input');
 
+    // Clear the input values if they exist
+    if (quantityInput) {
+        quantityInput.value = '';
+    }
+
+    if (effortInput) {
+        effortInput.value = '';
+    }
+}
 function toggleEdit(button) {
-    // Tìm hàng hiện tại chứa button Edit
+    // Tìm hàng hiện tại chứa nút Edit
     let row = button.closest('tr');
     let inputs = row.querySelectorAll('.edit-input');
     let displays = row.querySelectorAll('.text-display');
-    let formActionInline = row.querySelector('.form-action-inline');
-    let deleteButton = row.querySelector('.btn-delete'); // Lấy nút Xóa
+    let deleteButton = row.querySelector('.btn-delete'); // Nút Delete
 
-    // Kiểm tra xem đã ở chế độ chỉnh sửa hay chưa
+    // Kiểm tra xem đã ở chế độ chỉnh sửa chưa
     if (!button.classList.contains('editing')) {
-        // Bật chế độ chỉnh sửa: hiện inputs và ẩn text
-        inputs.forEach(input => input.style.display = 'inline');
-        displays.forEach(display => {
-            if (!display.classList.contains('name-display')) { // giữ nguyên tên worker
-                display.style.display = 'none';
-            }
-        });
+        // Bật chế độ chỉnh sửa: hiện các input và ẩn text hiển thị
+        inputs.forEach(input => input.classList.remove('hidden'));
+        displays.forEach(display => display.classList.add('hidden'));
 
-        // Ẩn nút Xóa
+        // Ẩn nút Delete và đổi nút Edit thành Save
         deleteButton.style.display = 'none';
-
-        // Thay đổi nút thành Save và Cancel
         button.innerHTML = '<i class="fa-solid fa-check"></i>';
-        button.classList.remove('btn-edit');    // remove color to set new color
-        button.classList.add('editing', 'btn-save-add');
+        button.classList.remove('bg-blue-500', 'btn-edit');
+        button.classList.add('bg-green-500', 'editing');
 
-        // Tạo nút Cancel
+        // Thêm nút Cancel
         let cancelButton = document.createElement('button');
         cancelButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-        cancelButton.classList.add('btn-icon', 'btn-cancel');
+        cancelButton.classList.add('bg-red-500', 'text-white', 'px-3', 'py-1', 'rounded-md', 'text-xs', 'md:text-sm');
         cancelButton.type = 'button';
 
-        // Khi bấm Cancel thì quay lại trạng thái ban đầu
+        // Khi nhấn Cancel, quay lại trạng thái ban đầu
         cancelButton.onclick = function() {
-            inputs.forEach(input => input.style.display = 'none');
-            displays.forEach(display => display.style.display = 'inline');
+            inputs.forEach(input => input.classList.add('hidden'));
+            displays.forEach(display => display.classList.remove('hidden'));
             button.innerHTML = '<i class="fa-solid fa-pen"></i>';
-            button.classList.remove('editing', 'btn-save-add');
-            button.classList.add('btn-edit');
-            deleteButton.style.display = 'inline'; // Hiển thị lại nút Xóa
+            button.classList.remove('bg-green-500', 'editing');
+            button.classList.add('bg-blue-500', 'btn-edit');
+            deleteButton.style.display = 'inline'; // Hiển thị lại nút Delete
             cancelButton.remove(); // Xóa nút Cancel
         };
 
         // Thêm nút Cancel vào sau nút Save
-        formActionInline.appendChild(cancelButton);
+        row.querySelector('.form-action-inline').appendChild(cancelButton);
+
     } else {
-        // Gom các trường input từ hàng hiện tại vào form và submit
+        // Khi nhấn Save, submit các input để chỉnh sửa
         let formEdit = document.createElement('form');
         formEdit.action = '/worker/edit';
         formEdit.method = 'post';
 
-        // Di chuyển các input từ row sang formEdit
-        inputs.forEach(input => {
-            formEdit.appendChild(input);
-        });
+        // Di chuyển các input từ row sang formEdit để submit
+        inputs.forEach(input => formEdit.appendChild(input));
 
-        // Thêm input chứa eid nếu không bị di chuyển
+        // Thêm input chứa eid nếu chưa bị di chuyển
         let eidInput = row.querySelector('input[name="eid"]');
         if (eidInput) {
             formEdit.appendChild(eidInput);
@@ -82,7 +83,6 @@ function updateHourlyRate(selectElement) {
     hourlyRateDisplay.textContent = newHourlyRate + 'K';
 }
 
-
 function confirmDelete() {
-    return confirm("Are you sure you want to delete this one?");
+    return confirm("Are you sure you want to delete this worker?");
 }
