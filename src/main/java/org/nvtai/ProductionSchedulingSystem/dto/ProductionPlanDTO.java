@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductionPlanDTO {
-    int planId;
+    int plid;
     String planname;
     Date startdate;
     Date enddate;

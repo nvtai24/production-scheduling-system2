@@ -13,7 +13,12 @@ import java.security.Principal;
 public class LoginController {
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+    public String login(Principal principal, @RequestParam(value = "error", required = false) String error, Model model) {
+
+//        if (principal != null) {
+//            return "redirect:/home";
+//        }
+
         if (error != null) {
             model.addAttribute("error", "Invalid username or password");
         }

@@ -13,6 +13,9 @@
     <h2 class="text-2xl font-semibold text-gray-700 text-center">Edit Production Plan</h2>
 
     <form class="space-y-4" th:action="@{/productionplan/edit}" method="POST">
+
+        <input type="hidden" name="plid" th:value="${planDetails.plan.plid}" />
+
         <div class="input-group">
             <label for="planname" class="block text-sm font-medium text-gray-700">Plan Name</label>
             <input type="text" name="planname" id="planname" th:value="${planDetails.plan.plname}"

@@ -6,70 +6,96 @@
     <title>Production Plan Details</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
     <link rel="stylesheet" th:href="@{/css/output.css}">
-
 </head>
-<body>
-<div class="common-container">
-    <div class="page-title">
+<body class="bg-gray-100">
+
+<div class="bg-white p-8 overflow-auto mt-16 h-screen">
+    <h2 class="text-2xl mb-4 font-semibold text-gray-700">
         <span th:text="${planDetails.plan.plname}"></span>
-    </div>
-    <div id="production-plan-info">
+    </h2>
+
+    <div id="production-plan-info" class="mb-6">
         <p><strong>Plan ID:</strong> <span th:text="${planDetails.plan.plid}"></span></p>
         <p><strong>Workshop:</strong> <span th:text="${planDetails.department.dname}"></span></p>
         <p><strong>Workshop Manager:</strong> <span th:text="${planDetails.managerName}"></span></p>
         <p><strong>Date:</strong>
             <span th:text="${#dates.format(planDetails.plan.startdate, 'dd/MM/yyyy')} + ' - ' + ${#dates.format(planDetails.plan.enddate, 'dd/MM/yyyy')}"></span>
         </p>
-
-        <p><strong>General Plan:</strong></p>
     </div>
 
-    <table id="production-plan-table" class="common-table">
-        <thead>
-        <tr>
-            <th>Product ID</th>
-            <th>Product Name</th>
-            <th>Quantity (Piece)</th>
-            <th>Estimated Effort (Hourly)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="productDetail : ${planDetails.productDetails}">
-            <td th:text="${productDetail.productId}"></td>
-            <td th:text="${productDetail.productName}"></td>
-            <td th:text="${productDetail.quantity}"></td>
-            <td th:text="${productDetail.effort}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div class="sub-title">
-        The detailed production plan is listed in the table below:
+    <!-- General Plan Table -->
+    <h3 class="text-xl mb-4 font-semibold text-gray-700">General Plan</h3>
+    <div class="relative overflow-auto">
+        <div class="overflow-x-auto rounded-lg">
+            <table class="min-w-full bg-white border mb-8">
+                <thead>
+                <tr class="bg-blue-500 text-center text-xs md:text-sm font-thin text-white">
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Product ID</span>
+                    </th>
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Product Name</span>
+                    </th>
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Quantity (Piece)</span>
+                    </th>
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Estimated Effort (Hourly)</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="productDetail : ${planDetails.productDetails}" class="border-b text-xs md:text-sm text-center text-gray-800">
+                    <td class="p-2 md:p-4" th:text="${productDetail.productId}"></td>
+                    <td class="p-2 md:p-4" th:text="${productDetail.productName}"></td>
+                    <td class="p-2 md:p-4" th:text="${productDetail.quantity}"></td>
+                    <td class="p-2 md:p-4" th:text="${productDetail.effort}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-        <table class="common-table">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Shift</th>
-                <th>Quantity</th>
-                <th>Note</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="dailyProduction : ${planDetails.dailyProductions}">
-                <td th:text="${#dates.format(dailyProduction.date, 'dd/MM/yyyy')}"></td>
-                <td th:text="${dailyProduction.productId}"></td>
-                <td th:text="${dailyProduction.productName}"></td>
-                <td th:text="${dailyProduction.shift}"></td>
-                <td th:text="${dailyProduction.quantity}"></td>
-                <td th:text="${dailyProduction.note}"></td>
-            </tr>
-            </tbody>
-        </table>
-
+    <!-- Daily Production Table -->
+    <h3 class="text-xl mb-4 font-semibold text-gray-700">Daily Detailed Production Plan</h3>
+    <div class="relative overflow-auto">
+        <div class="overflow-x-auto rounded-lg">
+            <table class="min-w-full bg-white border mb-8">
+                <thead>
+                <tr class="bg-blue-500 text-center text-xs md:text-sm font-thin text-white">
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Date</span>
+                    </th>
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Product ID</span>
+                    </th>
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Product Name</span>
+                    </th>
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Shift</span>
+                    </th>
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Quantity</span>
+                    </th>
+                    <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Note</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dailyProduction : ${planDetails.dailyProductions}" class="border-b text-xs md:text-sm text-center text-gray-800">
+                    <td class="p-2 md:p-4" th:text="${#dates.format(dailyProduction.date, 'dd/MM/yyyy')}"></td>
+                    <td class="p-2 md:p-4" th:text="${dailyProduction.productId}"></td>
+                    <td class="p-2 md:p-4" th:text="${dailyProduction.productName}"></td>
+                    <td class="p-2 md:p-4" th:text="${dailyProduction.shift}"></td>
+                    <td class="p-2 md:p-4" th:text="${dailyProduction.quantity}"></td>
+                    <td class="p-2 md:p-4" th:text="${dailyProduction.note}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 </body>

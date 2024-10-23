@@ -1,0 +1,29 @@
+<!-- fragments/sidebar.html -->
+<div class="w-64 bg-gray-800 min-h-screen text-white fixed">
+    <div class="p-4 flex flex-col items-center justify-center">
+        <img style="width: 150px;" src="https://freepngdesign.com/content/uploads/images/p-348-9-abc-logo-png-transparent-logo-132806248811.png" alt="Logo">
+        <h2 class="text-2xl font-bold">ABC Company</h2>
+    </div>
+    <nav class="mt-10">
+        <a href="/home" class="flex items-center py-2 px-4 hover:bg-gray-600">
+            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+        </a>
+        <a href="/productionplan/list" class="flex items-center py-2 px-4 hover:bg-gray-600">
+            <i class="fas fa-cogs mr-2"></i> Production Plans
+        </a>
+        <a href="/attendance" class="flex items-center py-2 px-4 hover:bg-gray-600">
+            <i class="fas fa-user-clock mr-2"></i> Attendance
+        </a>
+        <a href="/reports" class="flex items-center py-2 px-4 hover:bg-gray-600">
+            <i class="fas fa-file-alt mr-2"></i> Reports
+        </a>
+        <a href="/worker/list" class="flex items-center py-2 px-4 hover:bg-gray-600">
+            <i class="fas fa-users mr-2"></i> Workers
+        </a>
+    </nav>
+    <div class="absolute bottom-0 p-4">
+        <a href="/logout" class="block py-2 px-4 bg-red-600 rounded-lg text-center hover:bg-red-700">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+</div>

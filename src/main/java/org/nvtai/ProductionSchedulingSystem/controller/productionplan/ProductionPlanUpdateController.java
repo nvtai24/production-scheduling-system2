@@ -52,6 +52,8 @@ public class ProductionPlanUpdateController {
     @Transactional
     public String submit(@ModelAttribute ProductionPlanDTO productionPlanDTO, @RequestParam("plid") Integer plid) {
 
+        System.out.println(productionPlanDTO);
+
         planService.updatePlan(productionPlanDTO, plid);
 
         planHeaderService.updatePlanHeader(productionPlanDTO, plid);
