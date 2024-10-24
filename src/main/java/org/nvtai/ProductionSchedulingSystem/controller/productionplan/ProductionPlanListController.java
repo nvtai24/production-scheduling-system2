@@ -15,13 +15,13 @@ public class ProductionPlanListController {
     @Autowired
     private PlanService planService;
 
-    @GetMapping("/productionplan/list")
+    @GetMapping("/plan")
     public String listProductionPlans(Model model) {
         List<Plan> plans = planService.getAvailablePlans();
 
         model.addAttribute("plans", plans);
 
-        return "productionplan/list";
+        return "plan/list";
     }
 
 }

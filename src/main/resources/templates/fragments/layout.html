@@ -8,68 +8,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
 <body class="bg-gray-100">
-
 <div class="flex">
     <!-- Sidebar -->
-    <div class="w-64 bg-gray-800 min-h-screen text-white fixed">
-        <div class="p-4 flex flex-col items-center justify-center">
-            <a href="/home">
-                <img style="width: 150px;" src="https://freepngdesign.com/content/uploads/images/p-348-9-abc-logo-png-transparent-logo-132806248811.png" alt="">
-            </a>
-            <h2 class="text-2xl font-bold">ABC Company</h2>
-        </div>
+    <div th:replace="~{fragments/sidebar.html}"></div>
 
-        <nav class="mt-10">
-            <a href="/home" class="flex items-center py-4 px-8 w-full">
-                <i class="fa-solid fa-house mr-2"></i> Home
-            </a>
-            <a href="/productionplan/list" class="flex items-center py-4 px-8 w-full">
-                <i class="fas fa-cogs mr-2"></i> Production Plans
-            </a>
-            <a href="#" class="flex items-center py-4 px-8 w-full">
-                <i class="fas fa-user-clock mr-2"></i> Attendance
-            </a>
-            <a href="#" class="flex items-center py-4 px-8 w-full">
-                <i class="fas fa-file-alt mr-2"></i> Reports
-            </a>
-            <a href="/worker/list" class="flex items-center py-4 px-8 w-full">
-                <i class="fas fa-users mr-2"></i> Workers
-            </a>
-        </nav>
-
-        <div class="absolute bottom-0 p-4">
-            <a href="/logout" class="block py-2 px-4 bg-red-600 rounded-lg text-center hover:bg-red-700">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout
-            </a>
-        </div>
-    </div>
-
-    <!-- Header -->
+    <!-- Main Content -->
     <div class="flex-1 p-6 relative ml-64">
-
-        <!-- Main Content -->
-        <div th:replace="~{::content}"></div>
+        <div th:insert="~{::content}"></div>
     </div>
 </div>
 
 <script>
-    // Script for active navigation link
     const navLinks = document.querySelectorAll("nav a");
-    const currentUrl = window.location.pathname; // Lấy đường dẫn URL hiện tại
+    const currentUrl = window.location.pathname;
 
     navLinks.forEach(link => {
-        // Kiểm tra xem đường dẫn hiện tại có bắt đầu bằng href của liên kết không
         if (currentUrl.startsWith(link.getAttribute("href"))) {
-            link.classList.add("bg-gray-700"); // Thêm lớp active cho liên kết hiện tại
+            link.classList.add("bg-gray-700");
         }
 
-        // Thêm sự kiện click cho mỗi liên kết
         link.addEventListener("click", function() {
-            navLinks.forEach(nav => nav.classList.remove("bg-gray-700")); // Xóa lớp active khỏi tất cả các liên kết
-            this.classList.add("bg-gray-700"); // Thêm lớp active cho liên kết hiện tại
+            navLinks.forEach(nav => nav.classList.remove("bg-gray-700"));
+            this.classList.add("bg-gray-700");
         });
     });
 </script>
-
 </body>
 </html>

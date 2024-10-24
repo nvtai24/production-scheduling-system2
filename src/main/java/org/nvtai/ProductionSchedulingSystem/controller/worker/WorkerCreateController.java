@@ -42,6 +42,6 @@ public class WorkerCreateController {
     @PostMapping(value = "/worker/add")
     public String submit(@ModelAttribute("worker") EmployeeDTO worker) {
         employeeService.save(worker);
-        return "redirect:/worker/list"; // Redirect back to the worker list page
+        return "redirect:/worker"; // Redirect back to the worker list page
     }
 }

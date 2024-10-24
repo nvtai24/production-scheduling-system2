@@ -14,10 +14,13 @@
 
 <div class="py-16">
     <div class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
-        <div class="hidden lg:block lg:w-1/2 bg-cover"
-             th:style="'background-image: url(' + @{/images/home.jpg} + ')'">
+
+        <div class="hidden lg:block lg:w-1/2 bg-cover" th:style="|background-image: url('@{/images/home.jpg}')|">
         </div>
         <div class="w-full p-8 lg:w-1/2">
+            <div class="flex justify-center items-center">
+                <img style="width: 150px;" src="/images/logo.png" alt="Logo">
+            </div>
             <h2 class="text-2xl font-semibold text-gray-700 text-center">ABC Company</h2>
             <p class="text-xl text-gray-600 text-center">Welcome back!</p>
 

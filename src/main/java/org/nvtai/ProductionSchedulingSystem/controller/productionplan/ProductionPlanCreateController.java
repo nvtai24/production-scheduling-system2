@@ -15,8 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProductionPlanCreateController {
@@ -27,31 +30,30 @@ public class ProductionPlanCreateController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/productionplan/add")
-    public String showForm(Model model) {
-        List<Department> departments = departmentService.getDepartmentsByType("Production");
-        List<Product> products = productService.getAllProducts();
-
-        model.addAttribute("departments", departments);
-        model.addAttribute("products", products);
-
-        return "productionplan/add";
-    }
-
     @Autowired
     private PlanService planService;
 
     @Autowired
     private PlanHeaderService planHeaderService;
 
-    @PostMapping("/productionplan/add")
+    @GetMapping("/plan/add-data")
+    @ResponseBody
+    public Map<String, Object> getPlanFormData() {
+        List<Department> departments = departmentService.getDepartmentsByType("Production");
+        List<Product> products = productService.getAllProducts();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("departments", departments);
+        response.put("products", products);
+
+        return response;
+    }
+
+    @PostMapping("/plan/add")
     @Transactional
     public String submit(@ModelAttribute ProductionPlanDTO productionPlanDTO) {
         Plan plan = planService.createPlan(productionPlanDTO);
-
         planHeaderService.createPlanHeader(productionPlanDTO, plan);
-
-        return "redirect:/productionplan/list";
+        return "redirect:/plan";
     }
-
 }

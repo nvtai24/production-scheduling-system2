@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProductionPlanUpdateController {
@@ -28,18 +27,22 @@ public class ProductionPlanUpdateController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/productionplan/edit")
-    public String showForm(@RequestParam("plid") Integer id, Model model) {
+    @GetMapping("/plan/edit-data")
+    @ResponseBody
+    public Map<String, Object> getEditPlanData(@RequestParam("plid") Integer id) {
         ProductionPlanDetailDTO planDetailsDTO = productionPlanDetailService.getProductionPlanDetail(id);
-
         List<Department> departments = departmentService.getDepartmentsByType("Production");
         List<Product> products = productService.getAllProducts();
 
-        model.addAttribute("departments", departments);
-        model.addAttribute("products", products);
-        model.addAttribute("planDetails", planDetailsDTO);
+        Map<String, Object> response = new HashMap<>();
+        response.put("plan", planDetailsDTO.getPlan());
+        response.put("departments", departments);
+        response.put("products", products);
+        response.put("planDetails", planDetailsDTO);
 
-        return "productionplan/edit";
+        planDetailsDTO.getPlan();
+
+        return response;  // Trả về dưới dạng JSON
     }
 
     @Autowired
@@ -48,7 +51,7 @@ public class ProductionPlanUpdateController {
     @Autowired
     private PlanHeaderService planHeaderService;
 
-    @PostMapping("/productionplan/edit")
+    @PostMapping("/plan/edit")
     @Transactional
     public String submit(@ModelAttribute ProductionPlanDTO productionPlanDTO, @RequestParam("plid") Integer plid) {
 
@@ -58,6 +61,6 @@ public class ProductionPlanUpdateController {
 
         planHeaderService.updatePlanHeader(productionPlanDTO, plid);
 
-        return "redirect:/productionplan/detail?plid=" + plid;
+        return "redirect:/plan/detail?plid=" + plid;
     }
 }

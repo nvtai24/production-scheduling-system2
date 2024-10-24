@@ -12,10 +12,10 @@ public class ProductionPlanDeleteController {
     @Autowired
     private PlanService planService;
 
-    @PostMapping(value = "/productionplan/remove")
+    @PostMapping(value = "/plan/remove")
     public String removeProductionPlan(@RequestParam("plid") int id) {
         planService.delete(id);
 
-        return "redirect:/productionplan/list";
+        return "redirect:/plan";
     }
 }

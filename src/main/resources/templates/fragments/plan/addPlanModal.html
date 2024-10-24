@@ -1,0 +1,58 @@
+<!-- Modal Add Plan Fragment -->
+<div id="addPlanModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="modal-content bg-white shadow-lg rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative">
+    <h2 class="text-2xl font-semibold text-gray-700 text-center">Production Plan Create</h2>
+
+        <!-- Nút đóng modal -->
+        <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal('addPlanModal')">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <form class="space-y-4" th:action="@{/plan/add}" method="POST">
+            <div class="input-group">
+                <label for="planname" class="block text-sm font-medium text-gray-700">Plan name</label>
+                <input type="text" name="planname" id="planname" placeholder="Plan name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="input-group">
+                    <label for="from" class="block text-sm font-medium text-gray-700">From</label>
+                    <input type="date" name="startdate" id="from" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="to" class="block text-sm font-medium text-gray-700">To</label>
+                    <input type="date" name="enddate" id="to" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="department" class="block text-sm font-medium text-gray-700">Workshop:</label>
+                <select id="department" name="departmentId" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                    <!-- Options will be dynamically loaded here -->
+                </select>
+            </div>
+
+            <table class="min-w-full bg-white shadow-md rounded-md">
+                <thead class="bg-gray-50 border-b">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estimated Effort</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                <!-- Rows will be dynamically loaded here -->
+                </tbody>
+            </table>
+
+            <div class="mt-4">
+                <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-blue-700">Save</button>
+            </div>
+            <div class="mt-2">
+                <button type="button" class="bg-red-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-red-700" onclick="closeModal('addPlanModal')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

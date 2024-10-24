@@ -19,6 +19,6 @@ public class WorkerUpdateController {
 
         System.out.println(worker);
         employeeService.updateWorker(worker);
-        return "redirect:/worker/list"; // Redirect back to the worker list page
+        return "redirect:/worker"; // Redirect back to the worker list page
     }
 }

@@ -20,7 +20,7 @@ public class ProductionPlanDetailController {
     @Autowired
     private ProductionPlanDetailService productionPlanDetailService;
 
-    @GetMapping(value = "/productionplan/detail")
+    @GetMapping(value = "/plan/detail")
     public String showDetail(@RequestParam("plid") Integer id, Model model) {
         ProductionPlanDetailDTO planDetailsDTO = productionPlanDetailService.getProductionPlanDetail(id);
 
@@ -32,7 +32,7 @@ public class ProductionPlanDetailController {
         );
 
         model.addAttribute("planDetails", planDetailsDTO);
-        return "/productionplan/details";
+        return "/plan/details";
     }
 
 }

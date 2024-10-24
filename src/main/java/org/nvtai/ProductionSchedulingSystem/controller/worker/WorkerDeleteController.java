@@ -8,17 +8,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 
-public class WorkderDeleteController {
+public class WorkerDeleteController {
 
     @Autowired
     private EmployeeService employeeService;
 
-    // Delete worker by id
     @PostMapping(value = "/worker/remove")
     public String deleteWorker(@RequestParam("eid") int eid) {
         employeeService.delete(eid);
 
-        return "redirect:/worker/list";
+        return "redirect:/worker";
     }
 
 }

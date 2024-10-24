@@ -25,7 +25,7 @@ public class WorkerListController {
     @Autowired
     private SalaryService salaryService;
 
-    @GetMapping(value = "/worker/list")
+    @GetMapping(value = "/worker")
     private String showList(Model model) {
         // Show list of workers
 

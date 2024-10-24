@@ -1,0 +1,70 @@
+<!-- Edit Plan Modal -->
+<div id="editPlanModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="modal-content bg-white shadow-lg rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative">
+        <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal('editPlanModal')">
+            <i class="fa-solid fa-xmark text-2xl"></i>
+        </button>
+
+        <h2 class="text-2xl font-semibold text-gray-700 text-center mb-4">Edit Production Plan</h2>
+
+        <form class="space-y-4" th:action="@{/plan/edit}" method="POST">
+            <input type="hidden" id="edit-plid" name="plid" />
+
+            <div class="input-group">
+                <label for="edit-planname" class="block text-sm font-medium text-gray-700">Plan Name</label>
+                <input type="text" id="edit-planname" name="planname"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="input-group">
+                    <label for="edit-startdate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                    <input type="date" id="edit-startdate" name="startdate"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required />
+                </div>
+
+                <div class="input-group">
+                    <label for="edit-enddate" class="block text-sm font-medium text-gray-700">End Date</label>
+                    <input type="date" id="edit-enddate" name="enddate"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required />
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="edit-department" class="block text-sm font-medium text-gray-700">Workshop:</label>
+                <select id="edit-department" name="departmentId"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                    <!-- Options sẽ được nạp vào đây -->
+                </select>
+            </div>
+
+            <!-- Thêm trường Note -->
+            <div class="input-group">
+                <label for="edit-note" class="block text-sm font-medium text-gray-700">Note</label>
+                <textarea id="edit-note" name="note" rows="2" style="resize: none"
+                          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+            </div>
+
+            <table class="min-w-full bg-white shadow-md rounded-md">
+                <thead class="bg-gray-50 border-b">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estimated Effort</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="edit-products-table-body" class="bg-white divide-y divide-gray-200">
+                <!-- Dữ liệu sản phẩm sẽ được nạp vào đây -->
+                </tbody>
+            </table>
+
+            <div class="mt-4">
+                <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-blue-700">Save</button>
+            </div>
+            <div class="mt-2">
+                <button type="button" class="bg-red-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-red-700" onclick="closeModal('editPlanModal')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

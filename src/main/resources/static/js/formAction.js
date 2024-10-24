@@ -83,6 +83,180 @@ function updateHourlyRate(selectElement) {
     hourlyRateDisplay.textContent = newHourlyRate + 'K';
 }
 
-function confirmDelete() {
-    return confirm("Are you sure you want to delete this worker?");
+// Hàm mở modal Add Plan
+function openAddPlanModal() {
+    fetch('/plan/add-data')
+        .then(response => response.json())
+        .then(data => {
+            const departmentSelect = document.getElementById('department');
+            departmentSelect.innerHTML = '';
+            data.departments.forEach(department => {
+                const option = document.createElement('option');
+                option.value = department.did;
+                option.textContent = department.dname;
+                departmentSelect.appendChild(option);
+            });
+
+            const productTableBody = document.querySelector('#addPlanModal tbody');
+            productTableBody.innerHTML = '';
+            data.products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">${product.pname}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <input type="text" name="quantities[${product.pid}]" placeholder="Quantity" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <input type="text" name="efforts[${product.pid}]" placeholder="Effort" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <button type="button" class="text-red-600 hover:text-red-800" onclick="clearInputs(this)">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                `;
+                productTableBody.appendChild(row);
+            });
+
+            document.getElementById('addPlanModal').classList.remove('hidden');
+            document.body.classList.add('modal-open'); // Chặn cuộn trang
+        })
+        .catch(error => console.error('Error loading plan data:', error));
+}
+
+function openViewPlanModal(planId) {
+    fetch(`/plan/view-data?plid=${planId}`)
+        .then(response => response.json())
+        .then(data => {
+            const planDetails = document.getElementById('production-plan-details');
+            planDetails.innerHTML = `
+                <p><strong>Plan ID:</strong> ${data.plan.plid}</p>
+                <p><strong>Workshop:</strong> ${data.department.dname}</p>
+                <p><strong>Date:</strong> ${data.plan.startdate} - ${data.plan.enddate}</p>
+                <p><strong>Note:</strong> ${data.plan.note || 'No note provided'}</p> <!-- Hiển thị Note -->
+                
+                <h3 class="text-xl mb-4 font-semibold text-gray-700">General Plan</h3>
+                <table class="min-w-full bg-white border mb-8">
+                    <thead>
+                        <tr class="bg-blue-500 text-center text-xs font-thin text-white">
+                            <th class="p-2">Product ID</th>
+                            <th class="p-2">Product Name</th>
+                            <th class="p-2">Quantity</th>
+                            <th class="p-2">Estimated Effort</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.productDetails.map(detail => `
+                            <tr class="border-b text-center text-xs text-gray-800">
+                                <td class="p-2">${detail.productId}</td>
+                                <td class="p-2">${detail.productName}</td>
+                                <td class="p-2">${detail.quantity}</td>
+                                <td class="p-2">${detail.effort}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                
+                <h3 class="text-xl mb-4 font-semibold text-gray-700">Daily Production Plan</h3>
+                <table class="min-w-full bg-white border mb-8">
+                    <thead>
+                        <tr class="bg-blue-500 text-center text-xs font-thin text-white">
+                            <th class="p-2">Date</th>
+                            <th class="p-2">Product ID</th>
+                            <th class="p-2">Product Name</th>
+                            <th class="p-2">Total Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.summarizedDailyProductions.map(summary => `
+                            <tr class="border-b text-center text-xs text-gray-800">
+                                <td class="p-2">${summary.date}</td>
+                                <td class="p-2">${summary.productId}</td>
+                                <td class="p-2">${summary.productName}</td>
+                                <td class="p-2">${summary.totalQuantity}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('viewPlanModal').classList.remove('hidden');
+            document.body.classList.add('modal-open'); // Chặn cuộn trang
+        })
+        .catch(error => console.error('Error loading production plan details:', error));
+}
+
+
+function openEditPlanModal(planId) {
+    fetch(`/plan/edit-data?plid=${planId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Nạp dữ liệu vào modal
+            document.getElementById('edit-plid').value = data.plan.plid;
+            document.getElementById('edit-planname').value = data.plan.plname;
+            document.getElementById('edit-startdate').value = data.plan.startdate;
+            document.getElementById('edit-enddate').value = data.plan.enddate;
+            document.getElementById('edit-note').value = data.plan.note || ''; // Hiển thị Note cũ
+
+            // Nạp danh sách phòng ban
+            const departmentSelect = document.getElementById('edit-department');
+            departmentSelect.innerHTML = ''; // Xóa các option cũ
+            data.departments.forEach(department => {
+                const option = document.createElement('option');
+                option.value = department.did;
+                option.textContent = department.dname;
+                if (department.did === data.plan.departmentId) {
+                    option.selected = true;
+                }
+                departmentSelect.appendChild(option);
+            });
+
+            // Nạp sản phẩm vào bảng
+            const productTableBody = document.getElementById('edit-products-table-body');
+            productTableBody.innerHTML = ''; // Xóa các hàng cũ
+            data.products.forEach(product => {
+                const productDetail = data.planDetails.productDetails.find(detail => detail.productId === product.pid) || {};
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">${product.pname}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <input type="number" name="quantities[${product.pid}]" value="${productDetail.quantity || ''}" class="quantity-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <input type="number" step="0.1" name="efforts[${product.pid}]" value="${productDetail.effort || ''}" class="effort-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <button type="button" class="text-red-600 hover:text-red-800" onclick="clearInputs(this)">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                `;
+                productTableBody.appendChild(row);
+            });
+
+            // Mở modal
+            document.getElementById('editPlanModal').classList.remove('hidden');
+            document.body.classList.add('modal-open'); // Chặn cuộn trang
+        })
+        .catch(error => console.error('Error loading plan data:', error));
+}
+
+// Hàm đóng modal
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.classList.remove('modal-open'); // Bỏ chặn cuộn trang
+    }
+}
+
+
+
+// Hàm đóng modal dùng chung
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden'); // Bỏ chặn cuộn trang
+    }
 }
