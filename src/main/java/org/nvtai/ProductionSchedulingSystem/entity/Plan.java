@@ -26,4 +26,6 @@ public class Plan {
 
     Boolean isdeleted = false;
     String note;
+
+    Boolean iscompleted = false;
 }

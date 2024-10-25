@@ -25,4 +25,6 @@ public interface PlanRepository extends JpaRepository<Plan, Integer> {
     boolean existsByPlid(int plid);
 
     Plan save(Plan plan);
+    
+    List<Plan> findByIscompletedTrue();
 }

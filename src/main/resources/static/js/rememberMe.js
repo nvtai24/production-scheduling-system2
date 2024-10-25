@@ -24,7 +24,7 @@ window.onload = function() {
     }
 
     // Khi người dùng bấm submit form, lưu username và password nếu checkbox Remember Me được chọn
-    document.querySelector('.form').addEventListener('submit', function() {
+    document.querySelector('form').addEventListener('submit', function() {
         if (rememberMeCheckbox.checked) {
             localStorage.setItem('rememberedUsername', usernameInput.value);
             localStorage.setItem('rememberedPassword', encodeBase64(passwordInput.value)); // Mã hóa mật khẩu

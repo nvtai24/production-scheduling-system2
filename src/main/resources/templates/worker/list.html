@@ -15,6 +15,14 @@
         <div class="bg-white p-8 rounded-lg shadow-md mb-6">
             <h2 class="text-2xl mb-4 font-semibold text-gray-700">Worker List</h2>
 
+            <button onclick="openAddWorkerModal()" class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
+                <i class="fa-solid fa-plus mr-1"></i> Add New Worker
+            </button>
+
+            <th:block th:replace="~{fragments/worker/addWorkerModal.html}"></th:block>
+
+
+
             <div class="relative overflow-auto">
                 <div class="overflow-x-auto rounded-lg">
                     <table class="min-w-full bg-white border mb-20">
@@ -45,7 +53,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="worker, stat : ${workers}" class="border-b text-xs md:text-sm text-center text-gray-800">
+                        <tr th:each="worker, stat : ${workers}" class="border-b text-xs md:text-sm text-center text-gray-800 hover:bg-gray-100">
                             <td class="p-2 md:p-4">
                                 <span th:text="${stat.count}"></span>
                                 <input type="hidden" name="eid" th:value="${worker.eid}"/>

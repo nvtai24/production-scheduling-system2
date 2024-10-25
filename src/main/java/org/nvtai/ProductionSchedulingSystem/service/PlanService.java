@@ -65,5 +65,9 @@ public class PlanService {
         planRepository.save(existedPlan);
     }
 
+    public List<Plan> getCompletedPlans() {
+        return planRepository.findByIscompletedTrue();
+    }
+
 
 }

@@ -12,8 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class WorkerCreateController {
@@ -27,17 +30,20 @@ public class WorkerCreateController {
     @Autowired
     private SalaryService salaryService;
 
-    @GetMapping(value = "/worker/add")
-    public String showForm(Model model) {
+    @GetMapping(value = "/worker/add-data")
+    @ResponseBody
+    public Map<String, Object> getAddWorkerData() {
+        Map<String, Object> data = new HashMap<>();
 
         List<Department> departments = departmentService.getDepartmentsByType("Production");
         List<Salary> salaries = salaryService.listSalaries();
 
-        model.addAttribute("departments", departments);
-        model.addAttribute("salaries", salaries);
+        data.put("departments", departments);
+        data.put("salaries", salaries);
 
-        return "worker/add";
+        return data;
     }
+
 
     @PostMapping(value = "/worker/add")
     public String submit(@ModelAttribute("worker") EmployeeDTO worker) {

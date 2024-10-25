@@ -9,24 +9,26 @@
 <th:block th:replace="~{fragments/layout.html}">
     <th:block th:fragment="content">
 
-        <div class="bg-white p-4 rounded-lg shadow-md mb-6 flex justify-end">
+        <!-- Welcome Message -->
+        <div class="bg-white p-4 rounded-lg shadow-md mb-6 flex justify-between items-center">
+            <h1 class="text-3xl font-bold">
+                <i class="fa-regular fa-face-smile-wink"></i>
+                Welcome, <span th:text="${employee.ename}" class="text-green-600">User</span>!</h1>
             <div class="relative">
                 <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown" class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 cursor-pointer" src="/images/user-icon.png" alt="User dropdown">
 
                 <div id="userDropdown" class="hidden z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 absolute right-0 mt-1">
                     <div class="px-4 py-3 text-sm text-gray-900">
-                        <div>Bonnie Green</div>
-                        <div class="font-medium truncate">name@flowbite.com</div>
+                        <div>
+                            <span th:text="${employee.ename}">User name</span>
+                        </div>
+                        <div class="font-medium truncate">
+                            <span th:text="${user.email}">User email</span>
+                        </div>
                     </div>
                     <ul class="py-2 text-sm text-gray-700" aria-labelledby="avatarButton">
                         <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Earnings</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
                         </li>
                     </ul>
                     <div class="py-1">
@@ -45,17 +47,17 @@
 
         <!-- Stats Overview -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="bg-blue-400 p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-semibold">Total Plans</h2>
-                <p class="mt-2 text-gray-600 text-4xl font-bold">12</p>
+                <p class="mt-2 text-white text-4xl font-bold" th:text="${plans.size()}"></p>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="bg-green-500 p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-semibold">Completed Plans</h2>
-                <p class="mt-2 text-gray-600 text-4xl font-bold">8</p>
+                <p class="mt-2 text-white text-4xl font-bold" th:text="${completedPlans.size()}"></p>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="bg-yellow-400 p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-semibold">Ongoing Plans</h2>
-                <p class="mt-2 text-gray-600 text-4xl font-bold">4</p>
+                <p class="mt-2 text-white text-4xl font-bold" th:text="${plans.size - completedPlans.size()}"></p>
             </div>
         </div>
 
@@ -66,38 +68,29 @@
                 <thead>
                 <tr class="bg-gray-50 border-b">
                     <th class="text-left p-3 text-sm font-semibold text-gray-700">Plan Name</th>
-                    <th class="text-left p-3 text-sm font-semibold text-gray-700">Start Date</th>
-                    <th class="text-left p-3 text-sm font-semibold text-gray-700">End Date</th>
-                    <th class="text-left p-3 text-sm font-semibold text-gray-700">Status</th>
+                    <th class="text-center p-3 text-sm font-semibold text-gray-700">Start Date</th>
+                    <th class="text-center p-3 text-sm font-semibold text-gray-700">End Date</th>
+                    <th class="text-center p-3 text-sm font-semibold text-gray-700">Status</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="border-b">
-                    <td class="p-3 text-sm text-gray-700">Plan for October</td>
-                    <td class="p-3 text-sm text-gray-700">2024-10-01</td>
-                    <td class="p-3 text-sm text-gray-700">2024-10-31</td>
-                    <td class="p-3 text-sm text-gray-700">
-                        <span class="bg-yellow-400 text-yellow-800 text-sm px-2 py-1 rounded-full">Ongoing</span>
-                    </td>
-                </tr>
-                <tr class="border-b">
-                    <td class="p-3 text-sm text-gray-700">Plan for November</td>
-                    <td class="p-3 text-sm text-gray-700">2024-11-01</td>
-                    <td class="p-3 text-sm text-gray-700">2024-11-30</td>
-                    <td class="p-3 text-sm text-gray-700">
-                        <span class="bg-green-400 text-green-800 text-sm px-2 py-1 rounded-full">Planned</span>
+                <!-- Thymeleaf Iteration -->
+                <tr th:each="plan : ${plans}" class="border-b">
+                    <td class="p-3 text-sm text-gray-700" th:text="${plan.plname}"></td>
+                    <td class="p-3 text-center text-sm text-gray-700" th:text="${plan.startdate}"></td>
+                    <td class="p-3 text-center text-sm text-gray-700" th:text="${plan.enddate}"></td>
+                    <td class="p-3 text-center text-sm text-gray-700">
+                        <div class="w-full flex justify-center">
+                            <span th:class="${plan.iscompleted ? 'bg-green-500 text-green-800' : 'bg-yellow-400 text-yellow-800'} + ' text-sm px-2 py-1 rounded-full w-24'"
+                                  th:text="${plan.iscompleted ? 'Completed' : 'Ongoing'}"></span>
+                        </div>
+
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- Actions -->
-        <div class="flex justify-end">
-            <button class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
-                Create New Plan
-            </button>
-        </div>
     </th:block>
 </th:block>
 

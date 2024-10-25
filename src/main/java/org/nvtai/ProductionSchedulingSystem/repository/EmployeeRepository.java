@@ -32,5 +32,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         save(employee);
     };
 
-
 }

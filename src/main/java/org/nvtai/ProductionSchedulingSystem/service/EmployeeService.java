@@ -22,8 +22,17 @@ public class EmployeeService {
     @Autowired
     private SalaryService salaryService;
 
-    public Employee getWorkerByEid(int eid) {
-        return employeeRepository.findByEid(eid);
+    public EmployeeDTO getEmployeeByEid(int eid) {
+
+        Employee employee = employeeRepository.findByEid(eid);
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setEid(employee.getEid());
+        employeeDTO.setEname(employee.getEname());
+        employeeDTO.setPhonenumber(employee.getPhoneNumber());
+        employeeDTO.setAddress(employee.getAddress());
+        employeeDTO.setDid(employee.getDepartment().getDid());
+        employeeDTO.setSid(employee.getSalary().getSid());
+        return employeeDTO;
     }
 
     public Employee getManagerByDid(int did) {
@@ -72,4 +81,5 @@ public class EmployeeService {
 
         employeeRepository.save(newWorker);
     }
+
 }

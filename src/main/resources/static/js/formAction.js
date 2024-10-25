@@ -15,6 +15,7 @@ function clearInputs(element) {
         effortInput.value = '';
     }
 }
+
 function toggleEdit(button) {
     // Tìm hàng hiện tại chứa nút Edit
     let row = button.closest('tr');
@@ -241,14 +242,42 @@ function openEditPlanModal(planId) {
         .catch(error => console.error('Error loading plan data:', error));
 }
 
-// Hàm đóng modal
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.add('hidden');
-        document.body.classList.remove('modal-open'); // Bỏ chặn cuộn trang
-    }
+
+function openAddWorkerModal() {
+    // Hiển thị modal trước
+    document.getElementById('addWorkerModal').classList.remove('hidden');
+    document.body.classList.add('modal-open'); // Chặn cuộn trang
+
+    // Sau khi modal hiển thị, fetch dữ liệu từ server
+    fetch('/worker/add-data')
+        .then(response => response.json())
+        .then(data => {
+            const departmentSelect = document.getElementById('department');
+            const shiftSelect = document.getElementById('shift');
+
+            if (departmentSelect && shiftSelect) {
+                departmentSelect.innerHTML = '';
+                data.departments.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.did;
+                    option.textContent = department.dname;
+                    departmentSelect.appendChild(option);
+                });
+
+                shiftSelect.innerHTML = '';
+                data.salaries.forEach(salary => {
+                    const option = document.createElement('option');
+                    option.value = salary.sid;
+                    option.textContent = `${salary.slevel} - ${salary.salary}K`;
+                    shiftSelect.appendChild(option);
+                });
+            } else {
+                console.error('Department or shift element not found in DOM');
+            }
+        })
+        .catch(error => console.error('Error loading worker data:', error));
 }
+
 
 
 
@@ -257,6 +286,7 @@ function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.add('hidden');
+        document.body.classList.remove('modal-open'); // Bỏ chặn cuộn trang
         document.body.classList.remove('overflow-hidden'); // Bỏ chặn cuộn trang
     }
 }
