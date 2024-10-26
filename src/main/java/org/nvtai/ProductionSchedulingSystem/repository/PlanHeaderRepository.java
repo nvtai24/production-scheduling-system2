@@ -19,4 +19,6 @@ public interface PlanHeaderRepository extends JpaRepository<PlanHeader, Integer>
     boolean existsByPhid(int phid);
 
     PlanHeader save(PlanHeader planHeader);
+
+    PlanHeader findByPlanPlidAndProductPid(int plid, int pid);
 }

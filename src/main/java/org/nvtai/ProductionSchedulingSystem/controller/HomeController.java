@@ -36,7 +36,7 @@ public class HomeController {
         User user = userService.getUserByUsername(principal.getName());
         EmployeeDTO employee = employeeService.getEmployeeByEid(user.getEmployee().getEid());
 
-        List<Plan> plans = planService.getAllPlans();
+        List<Plan> plans = planService.getAvailablePlans();
         List<Plan> completedPlans = planService.getCompletedPlans();
 
         model.addAttribute("employee", employee);

@@ -20,6 +20,7 @@ public class PlanService {
         return planRepository.findAll();
     }
 
+
     public List<Plan> getAvailablePlans() {
         return planRepository.findByIsdeletedFalse();
     }

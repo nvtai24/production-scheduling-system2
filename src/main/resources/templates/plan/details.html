@@ -67,13 +67,13 @@
                         <span class="block py-2 px-3 border-r border-gray-300">Date</span>
                     </th>
                     <th class="p-0">
+                        <span class="block py-2 px-3 border-r border-gray-300">Shift</span>
+                    </th>
+                    <th class="p-0">
                         <span class="block py-2 px-3 border-r border-gray-300">Product ID</span>
                     </th>
                     <th class="p-0">
                         <span class="block py-2 px-3 border-r border-gray-300">Product Name</span>
-                    </th>
-                    <th class="p-0">
-                        <span class="block py-2 px-3 border-r border-gray-300">Shift</span>
                     </th>
                     <th class="p-0">
                         <span class="block py-2 px-3 border-r border-gray-300">Quantity</span>
@@ -86,9 +86,9 @@
                 <tbody>
                 <tr th:each="dailyProduction : ${planDetails.dailyProductions}" class="border-b text-xs md:text-sm text-center text-gray-800">
                     <td class="p-2 md:p-4" th:text="${#dates.format(dailyProduction.date, 'dd/MM/yyyy')}"></td>
+                    <td class="p-2 md:p-4" th:text="${dailyProduction.shift}"></td>
                     <td class="p-2 md:p-4" th:text="${dailyProduction.productId}"></td>
                     <td class="p-2 md:p-4" th:text="${dailyProduction.productName}"></td>
-                    <td class="p-2 md:p-4" th:text="${dailyProduction.shift}"></td>
                     <td class="p-2 md:p-4" th:text="${dailyProduction.quantity}"></td>
                     <td class="p-2 md:p-4" th:text="${dailyProduction.note}"></td>
                 </tr>

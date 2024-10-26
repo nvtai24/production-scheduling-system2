@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Scheduling</title>
+
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Đánh dấu ngày hợp lệ bằng một dấu chấm nhỏ màu xanh */
+        .fc-daygrid-day.valid-day {
+            position: relative;
+        }
+        .fc-daygrid-day.valid-day::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: green;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<h2 class="text-center text-2xl font-bold mt-8">
+
+
+    Production Scheduling</h2>
+
+<div id='calendar' class="mt-10 mx-auto max-w-4xl"></div>
+
+<div id="scheduleForm" class="hidden bg-white p-6 rounded-lg shadow-lg mt-8 max-w-2xl mx-auto">
+    <h3 class="text-lg font-bold mb-4">Schedule Shift for: <span id="selectedDate" class="font-normal"></span></h3>
+    <form id="shiftForm">
+        <label for="shift" class="block text-sm font-medium text-gray-700">Select Shift</label>
+        <select id="shift" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+        </select>
+
+        <label for="product" class="block text-sm font-medium text-gray-700 mt-4">Product Name</label>
+        <input type="text" id="product" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter product name">
+
+        <label for="quantity" class="block text-sm font-medium text-gray-700 mt-4">Quantity</label>
+        <input type="number" id="quantity" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter quantity">
+
+        <button type="submit" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save Shift</button>
+    </form>
+</div>
+
+<!-- FullCalendar JS -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var formContainer = document.getElementById('scheduleForm');
+        var selectedDateElement = document.getElementById('selectedDate');
+        var shiftForm = document.getElementById('shiftForm');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            validRange: {
+                start: '2024-10-01',
+                end: '2024-10-31'
+            },
+            dateClick: function(info) {
+                // Hiển thị form khi chọn ngày trong khoảng thời gian hợp lệ
+                if (info.date >= new Date('2024-10-10') && info.date <= new Date('2024-10-31')) {
+                    formContainer.classList.remove('hidden');
+                    formContainer.classList.add('block');
+                    selectedDateElement.textContent = info.dateStr;
+                }
+            },
+            dayCellDidMount: function(info) {
+                var date = info.date;
+                var start = new Date('2024-10-10');
+                var end = new Date('2024-10-31');
+                if (date < start || date > end) {
+                    info.el.classList.add('bg-gray-200', 'opacity-50', 'cursor-not-allowed');
+                } else {
+                    info.el.classList.add('bg-green-700', 'text-white'); // Tô màu đỏ cho các ngày hợp lệ
+                }
+            }
+        });
+
+        // Render lịch
+        calendar.render();
+
+        // Xử lý khi submit form lập lịch ca
+        shiftForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var shift = document.getElementById('shift').value;
+            var product = document.getElementById('product').value;
+            var quantity = document.getElementById('quantity').value;
+
+            alert('Shift Scheduled: ' + shift + '\nProduct: ' + product + '\nQuantity: ' + quantity);
+
+            // Ẩn form sau khi lưu
+            formContainer.classList.remove('block');
+            formContainer.classList.add('hidden');
+        });
+    });
+</script>
+
+
+</body>
+</html>

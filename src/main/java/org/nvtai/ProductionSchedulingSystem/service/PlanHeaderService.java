@@ -107,4 +107,10 @@ public class PlanHeaderService {
 
         return newPlanHeader;
     }
+
+    public PlanHeader getPlanHeaderIdByPlanIdAndProductId(Integer planId, Integer productId) {
+        return planHeaderRepository.findByPlanPlidAndProductPid(planId, productId);
+    }
+
+
 }
