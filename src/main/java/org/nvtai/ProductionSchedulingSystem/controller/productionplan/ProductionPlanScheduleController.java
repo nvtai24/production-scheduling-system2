@@ -1,5 +1,6 @@
 package org.nvtai.ProductionSchedulingSystem.controller.productionplan;
 
+import org.nvtai.ProductionSchedulingSystem.dto.ProductDetailDTO;
 import org.nvtai.ProductionSchedulingSystem.dto.ProductionPlanDetailDTO;
 import org.nvtai.ProductionSchedulingSystem.entity.*;
 import org.nvtai.ProductionSchedulingSystem.service.*;
@@ -14,10 +15,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 @Controller
 public class ProductionPlanScheduleController {
@@ -40,6 +38,7 @@ public class ProductionPlanScheduleController {
     @Autowired
     private PlanDetailService planDetailService;
 
+
     @GetMapping("/schedule")
     public String showListPlan(@RequestParam("plid") Integer plid, Model model) {
         ProductionPlanDetailDTO planDetails = productionPlanDetailService.getProductionPlanDetail(plid);
@@ -52,18 +51,22 @@ public class ProductionPlanScheduleController {
         // Lấy danh sách PlanDetail đã lập trước đó
         Map<String, Integer> previousSchedules = planDetailService.getPreviousPlanDetails(plid);
 
-        previousSchedules.forEach((key, value) -> {
-            System.out.println(key + " " + value);
-        });
+        // Tạo một Set chứa tất cả productId có trong kế hoạch sản xuất
+        Set<Integer> existingProductIds = new HashSet<>();
+        for (ProductDetailDTO productDetail : planDetails.getProductDetails()) {
+            existingProductIds.add(productDetail.getProductId());
+        }
 
         model.addAttribute("formattedDays", formattedDays);
         model.addAttribute("shifts", shifts);
         model.addAttribute("products", products);
         model.addAttribute("planDetails", planDetails);
         model.addAttribute("previousSchedules", previousSchedules);
+        model.addAttribute("existingProductIds", existingProductIds);  // Gửi Set productId đến Thymeleaf
 
         return "plan/schedule";
     }
+
 
     private List<String> listFormatDays(Date startDate, Date endDate) {
         LocalDate start = startDate.toLocalDate();

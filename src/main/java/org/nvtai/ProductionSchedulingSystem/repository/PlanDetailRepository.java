@@ -12,6 +12,8 @@ public interface PlanDetailRepository extends JpaRepository<PlanDetail, Integer>
 
     List<PlanDetail> findByPlanHeaderPhid(Integer phid);
 
+    List<PlanDetail> findByPlanHeaderPhidAndDate(Integer phid, Date date);
+
     PlanDetail findByPlanHeaderPhidAndShiftSidAndDate(int phid, int sid, Date date);
 
 }

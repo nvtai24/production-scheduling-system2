@@ -21,10 +21,9 @@ public class ProductionPlanDetailDTO {
 
     String note;
 
-    List<ProductDetailDTO> productDetails;
+    List<ProductDetailDTO> productDetails; // plan Header
 
-    private List<DailyProductionDTO> dailyProductions;
-
+    private List<DailyProductionDTO> dailyProductions; // plan details
 
     public ProductDetailDTO getProductDetailByPid(Integer productId) {
         return productDetails.stream()

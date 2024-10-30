@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Plan Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+    <style>
+        /* Fix cứng kích thước cho các cột */
+        .column-product-id {
+            width: 10%; /* Kích thước cố định nhỏ cho cột Product ID */
+        }
+
+        .column-product-name {
+            width: 25%; /* Kích thước cố định cho tên sản phẩm */
+        }
+
+        .column-quantity {
+            width: 15%; /* Kích thước cố định cho số lượng */
+        }
+
+        .column-note {
+            width: 50%; /* Kích thước lớn hơn cho ghi chú */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<th:block th:replace="~{fragments/layout.html}">
+
+    <th:block th:fragment="content">
+        <div class="bg-white p-8 overflow-auto h-screen">
+            <div class="flex justify-start p-4">
+                <a th:href="'/calendar?plid=' + ${planDetails.plan.plid}" class="text-blue-500 hover:text-blue-700">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <h2 class="text-2xl mb-4 font-semibold text-gray-700">
+                <span>Daily Detailed Production Plan at [[${date}]]</span>
+            </h2>
+
+            <a th:href="'/dailyproduction/assignment?planId=' + ${planDetails.plan.plid} + '&date=' + ${date}"
+               class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600 inline-block">
+                <i class="fa-solid fa-star"></i> Assignment
+            </a>
+
+            <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+
+            <div class="relative overflow-auto">
+                <!-- Bảng cho ca sáng -->
+                <h3 class="text-xl mb-4 font-semibold text-gray-700">K1</h3>
+
+                <button
+                        class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
+                    <i class="fa-solid fa-clipboard-check"></i> Take Attendance
+                </button>
+                <div class="overflow-x-auto rounded-lg mb-6">
+                    <table class="min-w-full bg-white border">
+                        <thead>
+                        <tr class="bg-blue-500 text-center text-xs md:text-sm font-thin text-white">
+                            <th class="column-product-id p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Product ID</span>
+                            </th>
+                            <th class="column-product-name p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Product Name</span>
+                            </th>
+                            <th class="column-quantity p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Quantity</span>
+                            </th>
+                            <th class="column-note p-0">
+                                <span class="block py-2 px-3">Note</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="dailyProduction : ${planDetails.dailyProductions}"
+                            th:if="${dailyProduction.shift == 'K1'}"
+                            class="border-b text-xs md:text-sm text-center text-gray-800">
+                            <td class="p-2 md:p-4 column-product-id" th:text="${dailyProduction.productId}"></td>
+                            <td class="p-2 md:p-4 column-product-name" th:text="${dailyProduction.productName}"></td>
+                            <td class="p-2 md:p-4 column-quantity" th:text="${dailyProduction.quantity}"></td>
+                            <td class="p-2 md:p-4 column-note" th:text="${dailyProduction.note}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng cho ca chiều -->
+                <h3 class="text-xl mb-4 font-semibold text-gray-700">K2</h3>
+
+                <button
+                        class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
+                    <i class="fa-solid fa-clipboard-check"></i> Take Attendance
+                </button>
+                <div class="overflow-x-auto rounded-lg mb-6">
+                    <table class="min-w-full bg-white border">
+                        <thead>
+                        <tr class="bg-blue-500 text-center text-xs md:text-sm font-thin text-white">
+                            <th class="column-product-id p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Product ID</span>
+                            </th>
+                            <th class="column-product-name p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Product Name</span>
+                            </th>
+                            <th class="column-quantity p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Quantity</span>
+                            </th>
+                            <th class="column-note p-0">
+                                <span class="block py-2 px-3">Note</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="dailyProduction : ${planDetails.dailyProductions}"
+                            th:if="${dailyProduction.shift == 'K2'}"
+                            class="border-b text-xs md:text-sm text-center text-gray-800">
+                            <td class="p-2 md:p-4 column-product-id" th:text="${dailyProduction.productId}"></td>
+                            <td class="p-2 md:p-4 column-product-name" th:text="${dailyProduction.productName}"></td>
+                            <td class="p-2 md:p-4 column-quantity" th:text="${dailyProduction.quantity}"></td>
+                            <td class="p-2 md:p-4 column-note" th:text="${dailyProduction.note}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng cho ca tối -->
+                <h3 class="text-xl mb-4 font-semibold text-gray-700">K3</h3>
+                <button
+                        class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
+                    <i class="fa-solid fa-clipboard-check"></i> Take Attendance
+                </button>
+                <div class="overflow-x-auto rounded-lg mb-6">
+                    <table class="min-w-full bg-white border">
+                        <thead>
+                        <tr class="bg-blue-500 text-center text-xs md:text-sm font-thin text-white">
+                            <th class="column-product-id p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Product ID</span>
+                            </th>
+                            <th class="column-product-name p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Product Name</span>
+                            </th>
+                            <th class="column-quantity p-0">
+                                <span class="block py-2 px-3 border-r border-gray-300">Quantity</span>
+                            </th>
+                            <th class="column-note p-0">
+                                <span class="block py-2 px-3">Note</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="dailyProduction : ${planDetails.dailyProductions}"
+                            th:if="${dailyProduction.shift == 'K3'}"
+                            class="border-b text-xs md:text-sm text-center text-gray-800">
+                            <td class="p-2 md:p-4 column-product-id" th:text="${dailyProduction.productId}"></td>
+                            <td class="p-2 md:p-4 column-product-name" th:text="${dailyProduction.productName}"></td>
+                            <td class="p-2 md:p-4 column-quantity" th:text="${dailyProduction.quantity}"></td>
+                            <td class="p-2 md:p-4 column-note" th:text="${dailyProduction.note}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+</th:block>
+
+</body>
+</html>

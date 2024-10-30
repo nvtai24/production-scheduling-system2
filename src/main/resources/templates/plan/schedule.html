@@ -79,12 +79,34 @@
                     </th:block>
                 </tr>
                 </thead>
+<!--                <tbody>-->
+<!--                <tr th:each="day, dayStat : ${formattedDays}">-->
+<!--                    <td class="border border-gray-300 px-4 py-2 text-center" th:text="${day}"></td>-->
+<!--                    <th:block th:each="shift : ${shifts}">-->
+<!--                        <th:block th:each="product : ${products}">-->
+<!--                            <td class="border border-gray-300 px-4 py-2 text-center">-->
+<!--                                <label>-->
+<!--                                    &lt;!&ndash; Hiển thị giá trị lịch cũ nếu có &ndash;&gt;-->
+<!--                                    <input type="number"-->
+<!--                                           th:attr="name='quantities[' + ${dayStat.index} + '][' + ${shift.sid} + '][' + ${product.pid} + ']'"-->
+<!--                                           class="w-full px-2 py-1 border border-gray-300 rounded-md"-->
+<!--                                           min="0" step="1"-->
+<!--                                           th:value="${previousSchedules['day:' + day + ',shift:' + shift.sid + ',product:' + product.pid] != null ? previousSchedules['day:' + day + ',shift:' + shift.sid + ',product:' + product.pid] : ''}">-->
+<!--                                </label>-->
+<!--                            </td>-->
+<!--                        </th:block>-->
+<!--                    </th:block>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+
                 <tbody>
                 <tr th:each="day, dayStat : ${formattedDays}">
                     <td class="border border-gray-300 px-4 py-2 text-center" th:text="${day}"></td>
                     <th:block th:each="shift : ${shifts}">
                         <th:block th:each="product : ${products}">
-                            <td class="border border-gray-300 px-4 py-2 text-center">
+                            <!-- Hiển thị dữ liệu bình thường nếu có sản xuất -->
+                            <td th:if="${existingProductIds.contains(product.pid)}"
+                                class="border border-gray-300 px-4 py-2 text-center">
                                 <label>
                                     <!-- Hiển thị giá trị lịch cũ nếu có -->
                                     <input type="number"
@@ -94,10 +116,19 @@
                                            th:value="${previousSchedules['day:' + day + ',shift:' + shift.sid + ',product:' + product.pid] != null ? previousSchedules['day:' + day + ',shift:' + shift.sid + ',product:' + product.pid] : ''}">
                                 </label>
                             </td>
+                            <!-- Làm mờ cột nếu không cần sản xuất sản phẩm -->
+                            <td th:if="${!existingProductIds.contains(product.pid)}"
+                                class="px-4 py-2 text-center opacity-70">
+                                <label>
+                                    <input type="number" disabled
+                                           class="w-full px-2 py-1 rounded-md bg-gray-400">
+                                </label>
+                            </td>
                         </th:block>
                     </th:block>
                 </tr>
                 </tbody>
+
             </table>
             <div class="mt-4">
                 <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-blue-700">Save</button>

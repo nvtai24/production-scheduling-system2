@@ -226,11 +226,11 @@ function openEditPlanModal(planId) {
                     <td class="px-6 py-4 whitespace-nowrap">
                         <input type="number" step="0.1" name="efforts[${product.pid}]" value="${productDetail.effort || ''}" class="effort-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <button type="button" class="text-red-600 hover:text-red-800" onclick="clearInputs(this)">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </td>
+<!--                    <td class="px-6 py-4 whitespace-nowrap">-->
+<!--                        <button type="button" class="text-red-600 hover:text-red-800" onclick="clearInputs(this)">-->
+<!--                            <i class="fa-solid fa-xmark"></i>-->
+<!--                        </button>-->
+<!--                    </td>-->
                 `;
                 productTableBody.appendChild(row);
             });

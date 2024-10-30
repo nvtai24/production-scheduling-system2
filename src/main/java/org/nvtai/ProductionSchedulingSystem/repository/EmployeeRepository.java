@@ -32,4 +32,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         save(employee);
     };
 
+    List<Employee> findByDepartmentDidAndIsmanagerAndIsdeleted(Integer did, boolean b, boolean b1);
+
 }

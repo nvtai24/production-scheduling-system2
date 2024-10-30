@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,10 @@ public class PlanDetailService {
 
     public List<PlanDetail> getPlanDetailsByPlanHeaderId(Integer phid) {
         return planDetailRepository.findByPlanHeaderPhid(phid);
+    }
+
+    public List<PlanDetail> getPlanDetailsByPlanHeaderIdAndDate(Integer phid, java.sql.Date date) {
+        return planDetailRepository.findByPlanHeaderPhidAndDate(phid, date);
     }
 
     public void savePlanDetail(PlanDetail planDetail) {
@@ -50,8 +55,12 @@ public class PlanDetailService {
 
             // Duyệt qua từng PlanDetail và lưu vào Map
             for (PlanDetail detail : details) {
-                String formattedDate = detail.getDate().toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // Đảm bảo định dạng khớp
-                String key = "day:" + formattedDate + ",shift:" + detail.getShift().getSid() + ",product:" + detail.getPlanHeader().getProduct().getPid();
+                String formattedDate = detail.getDate()
+                        .toLocalDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // Đảm bảo định dạng khớp
+                String key =
+                        "day:" + formattedDate + ",shift:" + detail.getShift().getSid() + ",product:"
+                                + detail.getPlanHeader().getProduct().getPid();
                 previousSchedules.put(key, detail.getQuantity());
             }
         }
@@ -59,5 +68,21 @@ public class PlanDetailService {
         return previousSchedules;
     }
 
+    public List<PlanDetail> getPlanDetails(Integer planId, String date) {
+        ArrayList<PlanHeader> headers = new ArrayList<>(planHeaderRepository.findByPlanPlid(planId));
 
+        List<PlanDetail> details = new ArrayList<>();
+
+        for (PlanHeader header : headers) {
+            details.addAll(
+                planDetailRepository.findByPlanHeaderPhidAndDate(header.getPhid(), java.sql.Date.valueOf(date)));
+        }
+
+        return details;
+    }
+
+    public PlanDetail getPlanDetail(Integer planId, Integer shiftId, Integer productId, String date) {
+        PlanHeader planHeader = planHeaderRepository.findByPlanPlidAndProductPid(planId, productId);
+        return planDetailRepository.findByPlanHeaderPhidAndShiftSidAndDate(planHeader.getPhid(), shiftId, java.sql.Date.valueOf(date));
+    }
 }

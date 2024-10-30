@@ -82,4 +82,7 @@ public class EmployeeService {
         employeeRepository.save(newWorker);
     }
 
+    public List<Employee> getWorkersByDid(Integer did) {
+        return employeeRepository.findByDepartmentDidAndIsmanagerAndIsdeleted(did, false, false);
+    }
 }
