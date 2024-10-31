@@ -75,19 +75,32 @@ public class PlanDetailService {
 
         for (PlanHeader header : headers) {
             details.addAll(
-                planDetailRepository.findByPlanHeaderPhidAndDate(header.getPhid(), java.sql.Date.valueOf(date)));
+                    planDetailRepository.findByPlanHeaderPhidAndDate(header.getPhid(), java.sql.Date.valueOf(date)));
         }
 
         return details;
     }
 
-    public PlanDetail getPlanDetail(Integer planId, Integer shiftId, Integer productId, String date) {
-        PlanHeader planHeader = planHeaderRepository.findByPlanPlidAndProductPid(planId, productId);
-        return planDetailRepository.findByPlanHeaderPhidAndShiftSidAndDate(planHeader.getPhid(), shiftId, java.sql.Date.valueOf(date));
+    public List<PlanDetail> getPlanDetails(Integer planId, String date, Integer shiftId) {
+        ArrayList<PlanHeader> headers = new ArrayList<>(planHeaderRepository.findByPlanPlid(planId));
+
+        List<PlanDetail> details = new ArrayList<>();
+
+        for (PlanHeader header : headers) {
+            details.add(planDetailRepository.findByPlanHeaderPhidAndShiftSidAndDate(
+                    header.getPhid(), shiftId, java.sql.Date.valueOf(date)));
+        }
+        return details;
     }
 
+    public PlanDetail getPlanDetail(Integer planId, Integer shiftId, Integer productId, String date) {
+        PlanHeader planHeader = planHeaderRepository.findByPlanPlidAndProductPid(planId, productId);
+        return planDetailRepository.findByPlanHeaderPhidAndShiftSidAndDate(
+                planHeader.getPhid(), shiftId, java.sql.Date.valueOf(date));
+    }
 
     public PlanDetail getPlanDetail(Integer planHeaderId, Integer shiftId, String date) {
-        return planDetailRepository.findByPlanHeaderPhidAndShiftSidAndDate(planHeaderId, shiftId, java.sql.Date.valueOf(date));
+        return planDetailRepository.findByPlanHeaderPhidAndShiftSidAndDate(
+                planHeaderId, shiftId, java.sql.Date.valueOf(date));
     }
 }

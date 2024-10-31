@@ -1,5 +1,6 @@
 package org.nvtai.ProductionSchedulingSystem.repository;
 
+import org.nvtai.ProductionSchedulingSystem.entity.Plan;
 import org.nvtai.ProductionSchedulingSystem.entity.PlanDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,8 @@ public interface PlanDetailRepository extends JpaRepository<PlanDetail, Integer>
 
     List<PlanDetail> findByPlanHeaderPhidAndDate(Integer phid, Date date);
 
-    PlanDetail findByPlanHeaderPhidAndShiftSidAndDate(int phid, int sid, Date date);
+    PlanDetail findByPlanHeaderPhidAndShiftSidAndDate(Integer phid, Integer sid, Date date);
+
+
 
 }

@@ -1,13 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Attendance for Production Shifts</title>
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
-<body>
-    Màn hình attendance cho ca X ngày Y ok
+<body class="bg-gray-100">
+
+<th:block th:replace="~{fragments/layout.html}">
+    <th:block th:fragment="content">
+        <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+            <div class="flex justify-start p-4">
+                <a href="javascript:history.back()" class="text-blue-500 hover:text-blue-700">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <h1 class="text-3xl font-bold text-center mb-8">Attendance for Production Shifts</h1>
+
+            <!-- Kiểm tra nếu assignments trống -->
+            <div th:if="${#lists.isEmpty(assignments)}" class="text-red-500 text-center text-lg font-semibold mb-8">
+                No Work Assignment to Take Attendance
+            </div>
+
+            <!-- Nếu assignments không trống, hiển thị form chấm công -->
+            <form th:action="@{/dailyproduction/attendance}" method="post" th:if="${!#lists.isEmpty(assignments)}">
+                <div class="relative overflow-auto mb-8">
+                    <h3 class="text-xl mb-4 font-semibold text-gray-700"
+                        th:text="${assignments[0].planDetail.shift.sname}"></h3>
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="min-w-full bg-white border border-gray-300">
+                            <thead>
+                            <tr class="bg-blue-500 text-center text-xs md:text-sm font-thin text-white">
+                                <th class="py-2 px-3 border-r border-gray-300">Employee ID</th>
+                                <th class="py-2 px-3 border-r border-gray-300">Employee Name</th>
+                                <th class="py-2 px-3 border-r border-gray-300">Product ID</th>
+                                <th class="py-2 px-3 border-r border-gray-300">Product Name</th>
+                                <th class="py-2 px-3 border-r border-gray-300">Assigned Quantity</th>
+                                <th class="py-2 px-3 border-r border-gray-300">Actual Quantity</th>
+                                <th class="py-2 px-3 border-r border-gray-300">Alpha</th>
+                                <th class="py-2 px-3 border-gray-300">Note</th>
+                            </tr>
+                            </thead>
+
+                            <tbody class="text-black">
+                            <tr th:each="assignment, iter : ${assignments}">
+                                <td class="py-3 px-4 text-center" th:text="${assignment.eid}"></td>
+                                <td class="py-3 px-4 text-center">
+                                    <span th:text="${employeeMap[assignment.eid]}">Employee Name</span>
+                                </td>
+                                <td class="py-3 px-4 text-center"
+                                    th:text="${assignment.planDetail.planHeader.product.pid}"></td>
+                                <td class="py-3 px-4 text-center"
+                                    th:text="${assignment.planDetail.planHeader.product.pname}"></td>
+                                <td class="py-3 px-4 text-center" th:text="${assignment.quantity}"></td>
+
+                                <!-- Hidden field for waid -->
+                                <input type="hidden" th:name="'attendanceList[' + ${iter.index} + '].waid'"
+                                       th:value="${assignment.waid}"/>
+
+                                <input type="hidden" th:name="'attendanceList[' + ${iter.index} + '].atid'"
+                                        th:value="${attendanceForm.attendanceList[iter.index].atid}"/>
+
+                                <td class="py-3 px-2 text-center">
+                                    <input type="number"
+                                           th:name="'attendanceList[' + ${iter.index} + '].actualQuantity'"
+                                           th:value="${attendanceForm.attendanceList[iter.index].actualQuantity}"
+                                           class="border border-gray-300 rounded-md p-2 w-20" placeholder="0"
+                                    >
+                                </td>
+                                <td class="py-3 px-2 text-center">
+                                    <input type="number"
+                                           th:name="'attendanceList[' + ${iter.index} + '].alpha'"
+                                           th:value="${attendanceForm.attendanceList[iter.index].alpha}"
+                                           step="0.1"
+                                           class="border border-gray-300 rounded-md p-2 w-20" placeholder="0.0">
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <input type="text"
+                                           th:name="'attendanceList[' + ${iter.index} + '].note'"
+                                           th:value="${attendanceForm.attendanceList[iter.index].note}"
+                                           class="border border-gray-300 rounded-md p-2 w-full" placeholder="Note">
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="mt-4">
+                    <button type="submit"
+                            class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-blue-700">
+                        Save Attendance
+                    </button>
+                </div>
+            </form>
+        </div>
+    </th:block>
+</th:block>
+
 </body>
 </html>

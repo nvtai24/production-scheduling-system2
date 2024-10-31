@@ -26,6 +26,10 @@ public class WorkAssignmentService {
     @Autowired
     private PlanHeaderService planHeaderService;
 
+    public WorkAssignment getWorkAssignmentById(Integer waid) {
+        return workAssignmentRepository.findById(waid).orElse(null);
+    }
+
     public void saveWorkAssignments(Integer planId, String date, Map<String, String> allParams) {
 
         Pattern pattern = Pattern.compile("assignments\\[(\\d+)\\]\\[(\\d+)]\\.quantities\\[(\\d+)]");
@@ -113,6 +117,30 @@ public class WorkAssignmentService {
         for (PlanDetail planDetail : planDetails) {
             List<WorkAssignment> assignments = workAssignmentRepository.findByPlanDetailPdid(planDetail.getPdid());
             workAssignments.addAll(assignments);
+        }
+        return workAssignments;
+    }
+
+    public List<WorkAssignment> getAssignmentsByPlanIdAndDate(Integer planId, String date, Integer shiftId) {
+        // Lấy dữ liệu từ cơ sở dữ liệu dựa vào planId, date và shiftId
+        List<PlanDetail> planDetails = planDetailService.getPlanDetails(planId, date, shiftId);
+
+        // Kiểm tra nếu planDetails là null
+        if (planDetails == null || planDetails.isEmpty()) {
+            System.out.println("No PlanDetails found for the given planId, date, and shiftId.");
+            return new ArrayList<>(); // Trả về danh sách trống nếu không có PlanDetails
+        }
+
+        List<WorkAssignment> workAssignments = new ArrayList<>();
+
+        // Duyệt qua từng PlanDetail và kiểm tra null trước khi truy cập
+        for (PlanDetail planDetail : planDetails) {
+            if (planDetail != null) {
+                List<WorkAssignment> assignments = workAssignmentRepository.findByPlanDetailPdid(planDetail.getPdid());
+                if (assignments != null) {
+                    workAssignments.addAll(assignments);
+                }
+            }
         }
         return workAssignments;
     }
