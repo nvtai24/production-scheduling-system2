@@ -55,10 +55,17 @@
                 <!-- Bảng cho ca sáng -->
                 <h3 class="text-xl mb-4 font-semibold text-gray-700">K1</h3>
 
-                <button
-                        class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
-                    <i class="fa-solid fa-clipboard-check"></i> Take Attendance
-                </button>
+                <form th:action="@{/dailyproduction/attendance}" method="get">
+                    <input type="hidden" name="plid" th:value="${planDetails.plan.plid}"/>
+                    <input type="hidden" name="date" th:value="${date}"/>
+                    <input type="hidden" name="sid" value="1"/>
+
+                    <button type="submit"
+                            class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
+                        <i class="fa-solid fa-clipboard-check"></i> Take Attendance
+                    </button>
+                </form>
+
                 <div class="overflow-x-auto rounded-lg mb-6">
                     <table class="min-w-full bg-white border">
                         <thead>
@@ -93,10 +100,17 @@
                 <!-- Bảng cho ca chiều -->
                 <h3 class="text-xl mb-4 font-semibold text-gray-700">K2</h3>
 
-                <button
-                        class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
-                    <i class="fa-solid fa-clipboard-check"></i> Take Attendance
-                </button>
+                <form th:action="@{/dailyproduction/attendance}" method="get">
+                    <input type="hidden" name="plid" th:value="${planDetails.plan.plid}"/>
+                    <input type="hidden" name="date" th:value="${date}"/>
+                    <input type="hidden" name="sid" value="2"/>
+
+                    <button type="submit"
+                            class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
+                        <i class="fa-solid fa-clipboard-check"></i> Take Attendance
+                    </button>
+                </form>
+
                 <div class="overflow-x-auto rounded-lg mb-6">
                     <table class="min-w-full bg-white border">
                         <thead>
@@ -130,10 +144,18 @@
 
                 <!-- Bảng cho ca tối -->
                 <h3 class="text-xl mb-4 font-semibold text-gray-700">K3</h3>
-                <button
-                        class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
-                    <i class="fa-solid fa-clipboard-check"></i> Take Attendance
-                </button>
+
+                <form th:action="@{/dailyproduction/attendance}" method="get">
+                    <input type="hidden" name="plid" th:value="${planDetails.plan.plid}"/>
+                    <input type="hidden" name="date" th:value="${date}"/>
+                    <input type="hidden" name="sid" value="3"/>
+
+                    <button type="submit"
+                            class="bg-green-500 text-white px-4 py-2 rounded-md text-xs md:text-sm hover:bg-green-600">
+                        <i class="fa-solid fa-clipboard-check"></i> Take Attendance
+                    </button>
+                </form>
+
                 <div class="overflow-x-auto rounded-lg mb-6">
                     <table class="min-w-full bg-white border">
                         <thead>

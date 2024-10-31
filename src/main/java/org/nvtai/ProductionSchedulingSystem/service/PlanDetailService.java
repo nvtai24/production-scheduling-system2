@@ -85,4 +85,9 @@ public class PlanDetailService {
         PlanHeader planHeader = planHeaderRepository.findByPlanPlidAndProductPid(planId, productId);
         return planDetailRepository.findByPlanHeaderPhidAndShiftSidAndDate(planHeader.getPhid(), shiftId, java.sql.Date.valueOf(date));
     }
+
+
+    public PlanDetail getPlanDetail(Integer planHeaderId, Integer shiftId, String date) {
+        return planDetailRepository.findByPlanHeaderPhidAndShiftSidAndDate(planHeaderId, shiftId, java.sql.Date.valueOf(date));
+    }
 }

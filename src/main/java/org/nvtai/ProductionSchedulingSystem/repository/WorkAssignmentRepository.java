@@ -12,4 +12,6 @@ public interface WorkAssignmentRepository extends JpaRepository<WorkAssignment, 
     WorkAssignment save(WorkAssignment workAssignment);
 
     List<WorkAssignment> findByPlanDetailPdid(Integer pdid);
+
+    WorkAssignment findByPlanDetailPdidAndEid(Integer pdid, Integer eid);
 }

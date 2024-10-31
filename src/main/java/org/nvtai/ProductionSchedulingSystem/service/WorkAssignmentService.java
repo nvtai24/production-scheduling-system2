@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class WorkAssignmentService {
@@ -20,48 +23,82 @@ public class WorkAssignmentService {
     @Autowired
     private PlanDetailService planDetailService;
 
+    @Autowired
+    private PlanHeaderService planHeaderService;
+
     public void saveWorkAssignments(Integer planId, String date, Map<String, String> allParams) {
 
+        Pattern pattern = Pattern.compile("assignments\\[(\\d+)\\]\\[(\\d+)]\\.quantities\\[(\\d+)]");
+
         for (Map.Entry<String, String> entry : allParams.entrySet()) {
-            // Xử lý key employee_<shiftId>_<index>
-            if (entry.getKey().startsWith("employee_")) {
-                String[] keyParts = entry.getKey().split("_");
-                String shiftId = keyParts[1]; // Lấy shiftId
-                String index = keyParts[2]; // Lấy chỉ số index
+            System.out.println("Processing: " + entry.getKey() + " : " + entry.getValue());
 
-                String employeeId = entry.getValue(); // Lấy employeeId (eid) từ giá trị
+            Matcher matcher = pattern.matcher(entry.getKey());
 
-                // Sau khi lấy employeeId, lặp qua allParams để tìm các quantity tương ứng
-                for (Map.Entry<String, String> quantityEntry : allParams.entrySet()) {
-                    // Xử lý key quantity_<shiftId>_<index>_<productId>
-                    if (quantityEntry.getKey().startsWith("quantity_" + shiftId + "_" + index)) {
-                        String[] quantityKeyParts = quantityEntry.getKey().split("_");
-                        String productId = quantityKeyParts[3]; // Lấy productId (pid)
-                        String quantityStr = quantityEntry.getValue(); // Lấy số lượng
+            if (matcher.find()) {
+                int shiftId = Integer.parseInt(matcher.group(1));
+                int employeeId = Integer.parseInt(matcher.group(2));
+                int productId = Integer.parseInt(matcher.group(3));
 
-                        // Kiểm tra xem quantity có hợp lệ hay không
-                        int quantity =
-                                (quantityStr != null && !quantityStr.isEmpty()) ? Integer.parseInt(quantityStr) : 0;
+                Integer quantity = entry.getValue() != null && !entry.getValue().isEmpty()
+                        ? Integer.parseInt(entry.getValue())
+                        : null;
 
-                        // Nếu employeeId và quantity hợp lệ, thực hiện xử lý tiếp
-                        if (employeeId != null && !employeeId.isEmpty() && quantity > 0) {
-                            // Tìm PlanDetail dựa trên planId, productId, shiftId, và date
-                            PlanDetail planDetail = planDetailService.getPlanDetail(
-                                    planId, Integer.parseInt(productId), Integer.parseInt(shiftId), date);
+                System.out.println("Extracted shiftId: " + shiftId + ", employeeId: " + employeeId + ", productId: "
+                        + productId + ", quantity: " + quantity);
 
-                            if (planDetail != null) {
-                                // Tạo WorkAssignment và lưu vào database
-                                WorkAssignment workAssignment = new WorkAssignment();
-                                workAssignment.setPlanDetail(planDetail);
-                                workAssignment.setEid(Integer.parseInt(employeeId));
-                                workAssignment.setQuantity(quantity);
+                // Bỏ qua nếu quantity == null
+                if (quantity == null) {
+                    continue;
+                }
 
-                                // Lưu WorkAssignment vào database
-                                workAssignmentRepository.save(workAssignment);
-                            }
+                if (quantity >= 0) {
+                    try {
+                        Integer phid = planHeaderService
+                                .getPlanHeaderIdByPlanIdAndProductId(planId, productId)
+                                .getPhid();
+
+                        if (phid == null) {
+                            System.out.println("No phid found for planId " + planId + " and productId " + productId);
+                            continue;
                         }
+
+                        PlanDetail planDetail = planDetailService.getPlanDetail(phid, shiftId, date);
+
+                        if (planDetail == null) {
+                            System.out.println(
+                                    "No PlanDetail found for phid " + phid + ", shiftId " + shiftId + ", date " + date);
+                            continue;
+                        }
+
+                        // Kiểm tra xem WorkAssignment đã tồn tại cho eid và pdid chưa
+                        WorkAssignment existingAssignment =
+                                workAssignmentRepository.findByPlanDetailPdidAndEid(planDetail.getPdid(), employeeId);
+
+                        if (existingAssignment != null) {
+                            // Cập nhật bản ghi nếu đã tồn tại
+                            System.out.println(
+                                    "Updating existing WorkAssignment with id: " + existingAssignment.getWaid());
+                        } else {
+                            // Tạo bản ghi mới nếu chưa tồn tại
+                            existingAssignment = new WorkAssignment();
+                            System.out.println("Creating new WorkAssignment");
+                        }
+
+                        // Thiết lập giá trị cho WorkAssignment
+                        existingAssignment.setPlanDetail(planDetail);
+                        existingAssignment.setEid(employeeId);
+                        existingAssignment.setQuantity(quantity);
+
+                        workAssignmentRepository.save(existingAssignment);
+                        System.out.println("Saved or updated WorkAssignment: " + existingAssignment);
+                    } catch (Exception e) {
+                        System.err.println("Error processing assignment: " + e.getMessage());
+                        e.printStackTrace();
                     }
                 }
+            } else {
+                System.out.println("Key does not match the expected pattern: " + entry.getKey());
             }
         }
     }
