@@ -33,6 +33,7 @@ public class HomeController {
             model.addAttribute("username", username);
         }
 
+        assert principal != null;
         User user = userService.getUserByUsername(principal.getName());
         EmployeeDTO employee = employeeService.getEmployeeByEid(user.getEmployee().getEid());
 

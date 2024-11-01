@@ -12,6 +12,8 @@ public interface PlanRepository extends JpaRepository<Plan, Integer> {
 
     List<Plan> findByIsdeletedFalse();
 
+    List<Plan> findByDepartmentDidAndIsdeletedFalse(Integer did);
+
     Plan findByPlid(int plid);
 
     void deleteByPlid(int plid);

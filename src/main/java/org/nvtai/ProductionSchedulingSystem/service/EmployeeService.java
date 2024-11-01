@@ -35,6 +35,10 @@ public class EmployeeService {
         return employeeDTO;
     }
 
+    public Employee getWorkerByEid(int eid) {
+        return employeeRepository.findByEid(eid);
+    }
+
     public Employee getManagerByDid(int did) {
         return employeeRepository.findByDepartmentDidAndIsmanager(did, true).getFirst();
     }

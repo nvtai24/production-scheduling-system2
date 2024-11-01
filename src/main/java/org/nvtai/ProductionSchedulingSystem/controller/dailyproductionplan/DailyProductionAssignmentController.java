@@ -35,16 +35,16 @@ public class DailyProductionAssignmentController {
 
     @GetMapping("/dailyproduction/assignment")
     public String showDailyProductionAssignment(
-            @RequestParam("planId") Integer planId, @RequestParam("date") String date, Model model) {
-        Plan selectedPlan = planService.get(planId);
+            @RequestParam("plid") Integer plid, @RequestParam("date") String date, Model model) {
+        Plan selectedPlan = planService.get(plid);
         List<Employee> employees =
                 employeeService.getWorkersByDid(selectedPlan.getDepartment().getDid());
-        List<Product> productsPlanned = planHeaderService.getPlanHeadersByPlanId(planId).stream()
+        List<Product> productsPlanned = planHeaderService.getPlanHeadersByPlanId(plid).stream()
                 .map(PlanHeader::getProduct)
                 .collect(Collectors.toList());
         List<Shift> shifts = shiftService.getAllShifts();
 
-        List<WorkAssignment> assignments = workAssignmentService.getAssignmentsByPlanIdAndDate(planId, date);
+        List<WorkAssignment> assignments = workAssignmentService.getAssignmentsByPlanIdAndDate(plid, date);
         Map<String, WorkAssignment> assignmentMap = new HashMap<>();
 
         for (WorkAssignment assignment : assignments) {
@@ -58,7 +58,7 @@ public class DailyProductionAssignmentController {
         model.addAttribute("productsPlanned", productsPlanned);
         model.addAttribute("shifts", shifts);
         model.addAttribute("assignmentMap", assignmentMap);
-        model.addAttribute("planId", planId);
+        model.addAttribute("plid", plid);
         model.addAttribute("date", date);
 
         return "/dailyproductionplan/assignment";
@@ -69,8 +69,9 @@ public class DailyProductionAssignmentController {
 
     @PostMapping("/dailyproduction/assignments")
     public String saveWorkAssignments(
-            @RequestParam Integer planId, @RequestParam String date, @RequestParam Map<String, String> allParams) {
-        workAssignmentService.saveWorkAssignments(planId, date, allParams);
-        return "redirect:/home"; // Thay bằng URL mà bạn muốn chuyển hướng sau khi lưu
+            @RequestParam Integer plid, @RequestParam String date, @RequestParam Map<String, String> allParams) {
+        workAssignmentService.saveWorkAssignments(plid, date, allParams);
+        return "redirect:/showdailydetail?plid=" + plid + "&date="
+                + date; // Thay bằng URL mà bạn muốn chuyển hướng sau khi lưu
     }
 }

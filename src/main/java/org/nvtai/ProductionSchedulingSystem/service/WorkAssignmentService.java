@@ -30,6 +30,10 @@ public class WorkAssignmentService {
         return workAssignmentRepository.findById(waid).orElse(null);
     }
 
+    public List<WorkAssignment> getWorkAssignmentsByPlanDetailId(Integer pdid) {
+        return workAssignmentRepository.findByPlanDetailPdid(pdid);
+    }
+
     public void saveWorkAssignments(Integer planId, String date, Map<String, String> allParams) {
 
         Pattern pattern = Pattern.compile("assignments\\[(\\d+)\\]\\[(\\d+)]\\.quantities\\[(\\d+)]");

@@ -37,7 +37,8 @@
         <div class="bg-white p-8 rounded-lg shadow-md mb-6">
             <h1 class="text-3xl font-bold text-center mb-8">Daily Production Plans</h1>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <!-- Set grid-cols to 4 for large screens -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Loop through plans -->
                 <div th:each="plan : ${plans}"
                      class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl dark:bg-gray-800 dark:border-gray-700 plan-card">

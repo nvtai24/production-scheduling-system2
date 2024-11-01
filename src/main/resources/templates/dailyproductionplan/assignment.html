@@ -6,8 +6,17 @@
     <title>Employee Assignment for 3 Shifts</title>
     <link rel="stylesheet" th:href="@{/css/output.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <style>
+        .plan-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
+
 
 <th:block th:replace="~{fragments/layout.html}">
     <th:block th:fragment="content">
@@ -20,9 +29,7 @@
 
             <h1 class="text-3xl font-bold text-center mb-8">Employee Assignment for 3 Shifts</h1>
 
-            <form th:action="@{/dailyproduction/assignments}" method="post">
-                <input type="hidden" name="planId" th:value="${planId}" />
-                <input type="hidden" name="date" th:value="${date}" />
+            <form th:action="@{/dailyproduction/assignments(plid=${plid}, date=${date})}" method="post">
 
                 <!-- Lặp qua các ca sản xuất (shifts) -->
                 <div th:each="shift : ${shifts}" class="relative overflow-auto mb-8">
@@ -42,7 +49,8 @@
                             </thead>
                             <tbody>
                             <!-- Liệt kê mỗi nhân viên cho từng ca -->
-                            <tr th:each="employee : ${employees}" class="border-b text-xs md:text-sm text-center text-gray-800">
+                            <tr th:each="employee : ${employees}"
+                                class="border-b text-xs md:text-sm text-center text-gray-800">
                                 <!-- Tên nhân viên -->
                                 <td class="p-2 md:p-4" th:text="${employee.ename}"></td>
                                 <!-- Ô nhập số lượng sản phẩm cho từng nhân viên cho mỗi ca -->
@@ -52,7 +60,7 @@
                                            th:name="'assignments[' + ${shift.sid} + '][' + ${employee.eid} + '].quantities[' + ${product.pid} + ']'"
                                            th:disabled="${!productsPlanned.contains(product)}"
                                            th:classappend="${!productsPlanned.contains(product)} ? 'bg-gray-300' : ''"
-                                           th:value="${assignmentMap[shift.sid + '_' + product.pid + '_' + employee.eid] != null ? assignmentMap[shift.sid + '_' + product.pid + '_' + employee.eid].quantity : ''}" />
+                                           th:value="${assignmentMap[shift.sid + '_' + product.pid + '_' + employee.eid] != null ? assignmentMap[shift.sid + '_' + product.pid + '_' + employee.eid].quantity : ''}"/>
                                 </td>
                             </tr>
                             </tbody>
@@ -63,7 +71,10 @@
 
                 <!-- Save Button -->
                 <div class="mt-4">
-                    <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-blue-700">Save Assignments</button>
+                    <button type="submit"
+                            class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-blue-700">Save
+                        Assignments
+                    </button>
                 </div>
             </form>
 

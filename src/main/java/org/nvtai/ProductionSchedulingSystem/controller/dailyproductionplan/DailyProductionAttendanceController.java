@@ -5,7 +5,6 @@ import org.nvtai.ProductionSchedulingSystem.dto.AttendanceForm;
 import org.nvtai.ProductionSchedulingSystem.entity.Attendance;
 import org.nvtai.ProductionSchedulingSystem.entity.Employee;
 import org.nvtai.ProductionSchedulingSystem.entity.WorkAssignment;
-import org.nvtai.ProductionSchedulingSystem.repository.AttendanceRepository;
 import org.nvtai.ProductionSchedulingSystem.service.AttendanceService;
 import org.nvtai.ProductionSchedulingSystem.service.EmployeeService;
 import org.nvtai.ProductionSchedulingSystem.service.WorkAssignmentService;
@@ -17,10 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -37,18 +33,28 @@ public class DailyProductionAttendanceController {
 
     @GetMapping("/dailyproduction/attendance")
     public String showDailyProductionAttendance(
-            @RequestParam("plid") Integer planId,
+            @RequestParam("plid") Integer plid,
             @RequestParam("date") String date,
             @RequestParam("sid") Integer sid,
             Model model) {
 
-        List<WorkAssignment> assignments = workAssignmentService.getAssignmentsByPlanIdAndDate(planId, date, sid);
+        List<WorkAssignment> assignments = workAssignmentService.getAssignmentsByPlanIdAndDate(plid, date, sid);
+
+        assignments = assignments.stream()
+                .filter(assignment -> assignment.getQuantity() > 0)
+                .sorted(Comparator.comparing(WorkAssignment::getEid).thenComparing(assignment -> assignment
+                        .getPlanDetail()
+                        .getPlanHeader()
+                        .getProduct()
+                        .getPid()))
+                .collect(Collectors.toList());
+
         Map<Integer, String> employeeMap = new HashMap<>();
         List<AttendanceDTO> attendanceList = new ArrayList<>();
 
         if (!assignments.isEmpty()) {
             List<Employee> workers = employeeService.getWorkersByDid(assignments
-                    .getFirst()
+                    .get(0)
                     .getPlanDetail()
                     .getPlanHeader()
                     .getPlan()
@@ -56,21 +62,34 @@ public class DailyProductionAttendanceController {
                     .getDid());
             employeeMap = workers.stream().collect(Collectors.toMap(Employee::getEid, Employee::getEname));
 
-            // Lấy dữ liệu attendance cũ cho từng WorkAssignment
             for (WorkAssignment assignment : assignments) {
-                Attendance attendance = attendanceService.findByWorkAssignmentWaid(assignment.getWaid());
                 AttendanceDTO dto = new AttendanceDTO();
-                dto.setAtid(attendance != null ? attendance.getAtid() : null);
                 dto.setWaid(assignment.getWaid());
-                dto.setActualQuantity(attendance != null ? attendance.getActualquantity() : null);
-                dto.setAlpha(attendance != null ? attendance.getAlpha() : null);
-                dto.setNote(attendance != null ? attendance.getNote() : "");
+
+                // Kiểm tra nếu có dữ liệu attendance trước đó
+                List<Attendance> attendances = attendanceService.findByWorkAssignmentWaid(assignment.getWaid());
+                if (!attendances.isEmpty()) {
+                    Attendance attendance = attendances.get(0);
+                    dto.setAtid(attendance.getAtid());
+                    dto.setActualQuantity(attendance.getActualquantity());
+                    dto.setAlpha(attendance.getAlpha());
+                    dto.setNote(attendance.getNote());
+                } else {
+                    dto.setAtid(null);
+                    dto.setActualQuantity(null);
+                    dto.setAlpha(null);
+                    dto.setNote("");
+                }
 
                 attendanceList.add(dto);
             }
         }
+
         AttendanceForm attendanceForm = new AttendanceForm();
         attendanceForm.setAttendanceList(attendanceList);
+
+        model.addAttribute("date", date);
+        model.addAttribute("plid", plid);
 
         model.addAttribute("employeeMap", employeeMap);
         model.addAttribute("assignments", assignments);
@@ -80,13 +99,15 @@ public class DailyProductionAttendanceController {
     }
 
 
-
     @PostMapping("/dailyproduction/attendance")
-    public String saveAttendance(@ModelAttribute AttendanceForm attendanceForm) {
+    public String saveAttendance(
+            @ModelAttribute AttendanceForm attendanceForm,
+            @RequestParam("plid") Integer plid,
+            @RequestParam("date") String date) {
         List<AttendanceDTO> attendanceList = attendanceForm.getAttendanceList();
 
         attendanceService.save(attendanceList);
 
-        return "redirect:/dailyproduction/attendance";
+        return "redirect:/showdailydetail?plid=" + plid + "&date=" + date;
     }
 }

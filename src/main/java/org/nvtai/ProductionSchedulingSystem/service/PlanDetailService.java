@@ -24,6 +24,10 @@ public class PlanDetailService {
         return planDetailRepository.findByPlanHeaderPhid(phid);
     }
 
+    public List<PlanDetail> getPlanDetailsByPlanHeaderIdAndMonthAndYear(Integer phid, int month, int year) {
+        return planDetailRepository.findByPlanHeaderIdAndMonthAndYear(phid, month, year);
+    }
+
     public List<PlanDetail> getPlanDetailsByPlanHeaderIdAndDate(Integer phid, java.sql.Date date) {
         return planDetailRepository.findByPlanHeaderPhidAndDate(phid, date);
     }

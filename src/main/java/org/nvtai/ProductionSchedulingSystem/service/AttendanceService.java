@@ -14,15 +14,14 @@ public class AttendanceService {
     @Autowired
     private AttendanceRepository attendanceRepository;
 
-    public Attendance findByWorkAssignmentWaid(Integer waid) {
+    public List<Attendance> findByWorkAssignmentWaid(Integer waid)
+    {
         return attendanceRepository.findByWorkAssignmentWaid(waid);
     }
 
     void saveAttendance(Attendance attendance) {
         attendanceRepository.save(attendance);
     }
-
-
 
     @Autowired
     private WorkAssignmentService workAssignmentService;

@@ -20,6 +20,9 @@ public class PlanService {
         return planRepository.findAll();
     }
 
+    public List<Plan> getPlansByDepartmentId(Integer did) {
+        return planRepository.findByDepartmentDidAndIsdeletedFalse(did);
+    }
 
     public List<Plan> getAvailablePlans() {
         return planRepository.findByIsdeletedFalse();

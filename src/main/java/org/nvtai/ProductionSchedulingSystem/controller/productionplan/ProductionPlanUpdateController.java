@@ -61,6 +61,7 @@ public class ProductionPlanUpdateController {
 
         planHeaderService.updatePlanHeader(productionPlanDTO, plid);
 
-        return "redirect:/plan/detail?plid=" + plid;
+//        return "redirect:/plan/detail?plid=" + plid;
+        return "redirect:/plan";
     }
 }
