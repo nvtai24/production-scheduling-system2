@@ -6,8 +6,6 @@
     <title>Report Salary</title>
     <link rel="stylesheet" th:href="@{/css/output.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-
-
 </head>
 <body class="bg-gray-100">
 
@@ -16,77 +14,54 @@
 
         <div class="bg-white p-8 rounded-lg shadow-md mb-6">
 
-            <!-- Form chọn tháng, năm và phòng sản xuất -->
+            <!-- Form to select month, year, and department -->
             <form th:action="@{/salary}" method="post">
 
-                <!-- Nhóm các ô select nằm trên cùng một dòng -->
+                <!-- Group of select inputs on the same line -->
                 <div class="flex space-x-4 mb-4">
-                    <!-- Dropdown chọn tháng -->
+                    <!-- Dropdown to select month -->
                     <div class="flex-1">
-                        <label for="month" class="block text-gray-700 font-semibold mb-2">Chọn tháng:</label>
+                        <label for="month" class="block text-gray-700 font-semibold mb-2">Select Month:</label>
                         <select name="month" id="month" class="border border-gray-300 rounded-md p-2 w-full"></select>
                     </div>
 
-                    <!-- Dropdown chọn năm -->
+                    <!-- Dropdown to select year -->
                     <div class="flex-1">
-                        <label for="year" class="block text-gray-700 font-semibold mb-2">Chọn năm:</label>
+                        <label for="year" class="block text-gray-700 font-semibold mb-2">Select Year:</label>
                         <select name="year" id="year" class="border border-gray-300 rounded-md p-2 w-full"></select>
                     </div>
 
-                    <!-- Dropdown chọn phòng sản xuất -->
+                    <!-- Dropdown to select department -->
                     <div class="flex-1">
-                        <label for="department" class="block text-gray-700 font-semibold mb-2">Chọn phòng sản
-                            xuất:</label>
+                        <label for="department" class="block text-gray-700 font-semibold mb-2">Select Department:</label>
                         <select name="did" id="department" class="border border-gray-300 rounded-md p-2 w-full"
                                 required>
-                            <option value="" disabled selected>Chọn phòng sản xuất</option>
+                            <option value="" disabled selected>Select Department</option>
                             <option th:each="dept : ${departments}"
                                     th:value="${dept.did}"
-                                    th:text="${dept.dname}">
-                                Phòng Sản Xuất
-                            </option>
+                                    th:selected="${dept.did == did}" th:text="${dept.dname}"></option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Nút xem báo cáo -->
+                <!-- Button to view report -->
                 <button type="submit"
                         class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded-lg hover:bg-blue-700">
-                    Xem Báo Cáo
+                    Export Report
                 </button>
             </form>
 
-            <div style="border: 1px solid black">
-
-                <div th:text="${salaryReports == null}"></div>
-
-                <h1>Result after export data</h1>
-
-                Total Effort and Salary at workshop 01 – October 2024
-
-                <p th:text="${month}"></p>
-                <p th:text="${year}"></p>
-                <p th:text="${did}"></p>
-
-            </div>
-
-
-            <div th:if="${salaryReports == null}" class="text-center text-red-500 mt-4">
-                <i class="fas fa-exclamation-circle"></i> Không có dữ liệu báo cáo
-            </div>
-
             <div th:if="${salaryReports != null}" class="mt-4">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold">Bảng lương tháng <span th:text="${month}"></span>/<span
+                    <h2 class="text-xl font-semibold">Salary Report for <span th:text="${month}"></span>/<span
                             th:text="${year}"></span></h2>
-                    <a href="#" class="text-blue-600 font-semibold">Xuất Excel</a>
                 </div>
                 <table class="min-w-full bg-white border border-gray-300 mb-20">
                     <thead>
                     <tr class="bg-blue-500 text-center text-xs md:text-sm font-thin text-white">
                         <th class="text-left p-3 text-sm font-semibold border border-gray-300">Employee ID</th>
                         <th class="text-left p-3 text-sm font-semibold border border-gray-300">Full Name</th>
-                        <!-- Thiết lập chiều rộng cố định cho các ô ngày -->
+                        <!-- Fixed width for date cells -->
                         <th th:each="date : ${dates}" th:text="${date.dayOfMonth}"
                             class="text-center p-3 text-sm font-semibold border border-gray-300 w-10"></th>
                         <th class="text-center p-3 text-sm font-semibold border border-gray-300">Salary</th>
@@ -103,7 +78,6 @@
                         <td class="p-3 text-center text-sm text-gray-700 border border-gray-300"
                             th:text="${report.totalSalary} + 'K'"></td>
                     </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -112,29 +86,37 @@
     </th:block>
 </th:block>
 
-<script>
-    // Lấy tháng và năm hiện tại
+<script th:inline="javascript">
+    // Get current month and year
     const today = new Date();
-    const currentMonth = today.getMonth() + 1; // Tháng tính từ 0-11
+    const currentMonth = today.getMonth() + 1; // Months are 0-11
     const currentYear = today.getFullYear();
 
+    // Values from server
+    const selectedMonth = /*[[${month}]]*/ null;
+    const selectedYear = /*[[${year}]]*/ null;
+    const selectedDid = /*[[${did}]]*/ null;
+
+    // Create month options
     // Tạo các tùy chọn cho tháng
     const monthSelect = document.getElementById("month");
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     for (let i = 1; i <= 12; i++) {
-        if (i > currentMonth && currentYear === today.getFullYear()) break; // Ngăn chọn tháng tương lai trong năm hiện tại
         const option = document.createElement("option");
         option.value = i;
         option.textContent = monthNames[i - 1];
+        if (i === selectedMonth) option.selected = true; // Chọn tháng từ server nếu có
         monthSelect.appendChild(option);
     }
 
-    // Tạo các tùy chọn cho năm, từ năm 2020 đến năm hiện tại
+
+    // Create year options from 2020 to the current year
     const yearSelect = document.getElementById("year");
-    for (let y = currentYear; y >= 2020; y--) { // Bạn có thể thay đổi 2020 thành năm bắt đầu tùy ý
+    for (let y = currentYear; y >= 2020; y--) {
         const option = document.createElement("option");
         option.value = y;
         option.textContent = y;
+        if (y === selectedYear) option.selected = true; // Select year from server
         yearSelect.appendChild(option);
     }
 </script>

@@ -221,10 +221,10 @@ function openEditPlanModal(planId) {
                 row.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap">${product.pname}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <input type="number" name="quantities[${product.pid}]" value="${productDetail.quantity || ''}" class="quantity-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <input type="number" min="0" step="1" name="quantities[${product.pid}]" value="${productDetail.quantity || ''}" class="quantity-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <input type="number" step="0.1" name="efforts[${product.pid}]" value="${productDetail.effort || ''}" class="effort-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <input type="number" min="0" step="0.1" name="efforts[${product.pid}]" value="${productDetail.effort || ''}" class="effort-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </td>
 <!--                    <td class="px-6 py-4 whitespace-nowrap">-->
 <!--                        <button type="button" class="text-red-600 hover:text-red-800" onclick="clearInputs(this)">-->

@@ -68,6 +68,7 @@
 
                                 <td class="py-3 px-2 text-center">
                                     <input type="number"
+                                           min="0" step="1"
                                            th:if="${attendanceForm.attendanceList.size() > iter.index}"
                                            th:name="'attendanceList[' + ${iter.index} + '].actualQuantity'"
                                            th:value="${attendanceForm.attendanceList[iter.index].actualQuantity}"
@@ -75,6 +76,7 @@
                                 </td>
                                 <td class="py-3 px-2 text-center">
                                     <input type="number"
+                                           min="0"
                                            th:if="${attendanceForm.attendanceList.size() > iter.index}"
                                            th:name="'attendanceList[' + ${iter.index} + '].alpha'"
                                            th:value="${attendanceForm.attendanceList[iter.index].alpha}"

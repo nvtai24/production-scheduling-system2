@@ -72,7 +72,7 @@
                 <input type="hidden" name="planId" th:value="${planDetails.plan.plid}">
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-gray-300">
-                        <thead>
+                        <thead class="bg-blue-500 text-center text-xs md:text-sm text-white">
                         <tr>
                             <th rowspan="2" class="border border-gray-300 px-4 py-2 text-left">Shift</th>
                             <th th:each="shift : ${shifts}" th:attr="colspan=${products.size()}"

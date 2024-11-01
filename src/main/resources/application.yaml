@@ -16,6 +16,10 @@ spring:
     servlet:
       session:
         timeout: 30m
+    error:
+      include-stacktrace: always
+      include-message: always
+      include-binding-errors: always
   logging:
     level:
       org:
