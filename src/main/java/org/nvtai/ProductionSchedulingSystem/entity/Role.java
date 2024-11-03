@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
+import org.nvtai.ProductionSchedulingSystem.entity.Feature;
 
 import java.util.HashSet;
 import java.util.Set;

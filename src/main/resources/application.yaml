@@ -25,6 +25,11 @@ spring:
       org:
         springframework:
           security: DEBUG
+        nvtai:
+          productionschedulingsystem:
+            config:
+              UrlMethodVoter: DEBUG
+              WebSecurityConfig: DEBUG
   devtools:
     restart:
       enabled=true:

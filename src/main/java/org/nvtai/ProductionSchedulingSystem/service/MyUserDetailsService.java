@@ -1,6 +1,6 @@
 package org.nvtai.ProductionSchedulingSystem.service;
 
-import org.nvtai.ProductionSchedulingSystem.entity.User;
+import org.nvtai.ProductionSchedulingSystem.entity.*;
 import org.nvtai.ProductionSchedulingSystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,15 +36,17 @@ public class MyUserDetailsService implements UserDetailsService {
             System.out.println("Role: " + role.getRname());
             System.out.println("Number of features: " + role.getFeatures().size());
             role.getFeatures().forEach(feature -> {
-                grantedAuthorities.add(new SimpleGrantedAuthority(feature.getUrl()));
-                System.out.println("Granted Authority: " + feature.getUrl());
+                // Kết hợp URL và phương thức HTTP để phân biệt quyền
+                String authority = feature.getUrl() + ":" + feature.getMethod();
+                grantedAuthorities.add(new SimpleGrantedAuthority(authority));
+                System.out.println("Granted Authority: " + authority);
             });
         });
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                grantedAuthorities
-        );
+                user.getUsername(), user.getPassword(), grantedAuthorities);
     }
+
+
+
 }

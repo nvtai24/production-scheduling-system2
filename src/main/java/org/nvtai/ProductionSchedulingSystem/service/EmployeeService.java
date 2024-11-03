@@ -40,7 +40,7 @@ public class EmployeeService {
     }
 
     public Employee getManagerByDid(int did) {
-        return employeeRepository.findByDepartmentDidAndIsmanager(did, true).getFirst();
+        return employeeRepository.findByDepartmentDidAndIsmanager(did, true).get(0);
     }
 
     public List<Employee> listWorkers() {

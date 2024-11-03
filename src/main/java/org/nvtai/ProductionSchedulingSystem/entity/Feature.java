@@ -26,4 +26,6 @@ public class Feature {
     @ManyToMany(mappedBy = "features")
     @EqualsAndHashCode.Exclude
     Set<Role> roles = new HashSet<>();
+
+    String method;
 }
