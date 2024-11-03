@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.*;
@@ -46,7 +45,7 @@ public class SecurityConfig {
 
     @Bean
     public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<?>> decisionVoters = Arrays.asList(new UrlMethodVoter());
+        List<AccessDecisionVoter<?>> decisionVoters = List.of(new UrlMethodVoter());
         return new AffirmativeBased(decisionVoters);
     }
 

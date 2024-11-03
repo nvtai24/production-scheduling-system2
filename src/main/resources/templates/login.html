@@ -7,7 +7,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/output.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
@@ -28,21 +30,24 @@
                 <div class="mt-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
                     <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                           type="text" name="username" id="username" placeholder="Username" th:value="${param.username}" required />
+                           type="text" name="username" id="username" placeholder="Username" th:value="${param.username}"
+                           required/>
                 </div>
                 <div class="mt-4">
                     <div class="flex justify-between">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
                     </div>
                     <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                           type="password" name="password" id="password" placeholder="Password" required />
+                           type="password" name="password" id="password" placeholder="Password" required/>
                 </div>
                 <div class="mt-4 flex items-center">
-                    <input type="checkbox" id="remember-me" name="remember-me" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
+                    <input type="checkbox" id="remember-me" name="remember-me"
+                           class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
                     <label class="text-gray-500 dark:text-gray-300 text-sm ml-2" for="remember-me">Remember me</label>
                 </div>
                 <div class="mt-8">
-                    <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600" type="submit">
+                    <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                            type="submit">
                         Login
                     </button>
                 </div>

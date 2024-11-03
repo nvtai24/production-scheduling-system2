@@ -1,3 +1,138 @@
+console.log("JavaScript interceptor đã được tải");
+
+function confirmDelete(form) {
+    // Hiển thị SweetAlert2 để xác nhận xóa
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This action cannot be undone!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Hiển thị thông báo thành công sau khi xác nhận và chỉ submit form khi bấm OK
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // Sau khi bấm OK trên thông báo thành công, tiến hành submit form
+                form.submit();
+            });
+        }
+    });
+}
+
+
+// Đoạn mã intercept mã lỗi 403
+const originalFetch = window.fetch;
+
+window.fetch = function (...args) {
+    return originalFetch(...args)
+        .then(response => {
+            if (response.status === 403) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Access Denied',
+                    text: 'You do not have permission to perform this action.',
+                    confirmButtonText: 'OK'
+                });
+                throw new Error('Access Denied');
+            }
+            return response;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            throw error;
+        });
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Chọn tất cả các thẻ <a> trong trang
+    const links = document.querySelectorAll("a");
+
+    links.forEach(link => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+            const url = this.getAttribute("href");
+
+            // Sử dụng fetch để kiểm tra quyền truy cập
+            fetch(url, {
+                method: 'GET', // Thay vì HEAD, sử dụng GET để đảm bảo yêu cầu được xử lý
+                headers: {'X-Requested-With': 'XMLHttpRequest'} // Đánh dấu là yêu cầu AJAX
+            })
+                .then(response => {
+                    if (response.status === 403) {
+                        // Nếu không có quyền, hiển thị thông báo lỗi
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Access Denied',
+                            text: 'You do not have permission to perform this action.',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        // Nếu có quyền, tiến hành điều hướng
+                        window.location.href = url;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    });
+});
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     // Lựa chọn tất cả các form trên trang
+//     const forms = document.querySelectorAll("form");
+//
+//     forms.forEach(form => {
+//         form.addEventListener("submit", function (event) {
+//             event.preventDefault(); // Ngăn chặn hành động gửi form mặc định
+//             const formData = new FormData(this);
+//             const action = this.getAttribute("action") || window.location.href;
+//             const method = this.getAttribute("method") || "POST";
+//
+//             // Sử dụng fetch để kiểm tra quyền truy cập và gửi form
+//             fetch(action, {
+//                 method: method.toUpperCase(),
+//                 headers: {'X-Requested-With': 'XMLHttpRequest'},
+//                 body: formData
+//             })
+//                 .then(response => {
+//                     if (response.status === 403) {
+//                         // Nếu không có quyền, hiển thị thông báo lỗi
+//                         Swal.fire({
+//                             icon: 'error',
+//                             title: 'Access Denied',
+//                             text: 'You do not have permission to perform this action.',
+//                             confirmButtonText: 'OK'
+//                         });
+//                         throw new Error('Access Denied'); // Dừng tiếp tục
+//                     }
+//                     return response.json(); // Xử lý JSON nếu có quyền
+//                 })
+//                 .then(data => {
+//                     // Xử lý phản hồi thành công
+//                     console.log('Form submitted successfully:', data);
+//                     Swal.fire({
+//                         icon: 'success',
+//                         title: 'Success',
+//                         text: 'Form submitted successfully!',
+//                         confirmButtonText: 'OK'
+//                     });
+//                 })
+//                 .catch(error => console.error('Error:', error));
+//         });
+//     });
+// });
+
+
+
 function clearInputs(element) {
     // Find the closest row that contains the button
     let row = element.closest('tr');
@@ -42,7 +177,7 @@ function toggleEdit(button) {
         cancelButton.type = 'button';
 
         // Khi nhấn Cancel, quay lại trạng thái ban đầu
-        cancelButton.onclick = function() {
+        cancelButton.onclick = function () {
             inputs.forEach(input => input.classList.add('hidden'));
             displays.forEach(display => display.classList.remove('hidden'));
             button.innerHTML = '<i class="fa-solid fa-pen"></i>';
@@ -244,14 +379,17 @@ function openEditPlanModal(planId) {
 
 
 function openAddWorkerModal() {
-    // Hiển thị modal trước
-    document.getElementById('addWorkerModal').classList.remove('hidden');
-    document.body.classList.add('modal-open'); // Chặn cuộn trang
-
-    // Sau khi modal hiển thị, fetch dữ liệu từ server
+    // Thực hiện fetch trước để kiểm tra quyền truy cập và lấy dữ liệu
     fetch('/worker/add-data')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                // Nếu phản hồi không thành công (ví dụ 403), chặn modal và hiển thị thông báo lỗi
+                throw new Error('Access Denied');
+            }
+            return response.json();
+        })
         .then(data => {
+            // Nếu phản hồi thành công, hiển thị modal và nạp dữ liệu
             const departmentSelect = document.getElementById('department');
             const shiftSelect = document.getElementById('shift');
 
@@ -274,11 +412,12 @@ function openAddWorkerModal() {
             } else {
                 console.error('Department or shift element not found in DOM');
             }
+
+            // Hiển thị modal sau khi dữ liệu được tải
+            document.getElementById('addWorkerModal').classList.remove('hidden');
+            document.body.classList.add('modal-open'); // Chặn cuộn trang
         })
-        .catch(error => console.error('Error loading worker data:', error));
 }
-
-
 
 
 // Hàm đóng modal dùng chung

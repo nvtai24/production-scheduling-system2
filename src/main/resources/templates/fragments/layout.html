@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Dashboard Layout</title>
+
+    <!-- Sử dụng Tailwind CSS qua CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Các link khác như Font Awesome và SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
@@ -16,22 +21,70 @@
     <div class="flex-1 p-6 relative ml-64">
         <div th:insert="~{::content}"></div>
     </div>
+
 </div>
 
 <script>
-    const navLinks = document.querySelectorAll("nav a");
-    const currentUrl = window.location.pathname;
+    document.addEventListener("DOMContentLoaded", function () {
+        const navLinks = document.querySelectorAll("nav a");
+        const currentUrl = window.location.pathname;
 
-    navLinks.forEach(link => {
-        if (currentUrl.startsWith(link.getAttribute("href"))) {
-            link.classList.add("bg-gray-700");
+        navLinks.forEach(link => {
+            // Kiểm tra quyền và thêm lớp `selected` nếu có quyền truy cập
+            if (currentUrl.startsWith(link.getAttribute("href"))) {
+                checkPermissionAndExecute(link.getAttribute("href"), () => {
+                    link.classList.add("bg-gray-700");
+                });
+            }
+
+            // Xử lý sự kiện click của link
+            link.addEventListener("click", function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+                const url = this.getAttribute("href");
+
+                checkPermissionAndExecute(url, () => {
+                    highlightLink(this);
+                    window.location.href = url;
+                });
+            });
+        });
+
+        // Hàm dùng chung để kiểm tra quyền truy cập và thực thi hành động nếu được phép
+        function checkPermissionAndExecute(url, onSuccess) {
+            fetch(url, {
+                method: 'GET', // Sử dụng GET để đảm bảo yêu cầu được xử lý
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            })
+                .then(response => {
+                    if (response.status === 403) {
+                        // Nếu không có quyền, hiển thị thông báo lỗi
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Access Denied',
+                            text: 'You do not have permission to perform this action.',
+                            confirmButtonText: 'OK'
+                        });
+                    } else if (response.ok) {
+                        // Nếu có quyền, thực hiện hành động truyền vào
+                        onSuccess();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking permission:', error);
+                });
         }
 
-        link.addEventListener("click", function() {
-            navLinks.forEach(nav => nav.classList.remove("bg-gray-700"));
-            this.classList.add("bg-gray-700");
-        });
+        // Hàm đánh dấu link đã chọn
+        function highlightLink(selectedLink) {
+            navLinks.forEach(link => link.classList.remove("bg-gray-700"));
+            selectedLink.classList.add("bg-gray-700");
+        }
     });
 </script>
+
+
+<script src="/js/main.js"></script>
+
+
 </body>
 </html>
